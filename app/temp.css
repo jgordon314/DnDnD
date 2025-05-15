@@ -1,0 +1,75 @@
+body {
+	display: grid;
+	place-items: center;
+	height: 100vh;
+}
+body {
+	font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+}
+
+caption {
+	white-space: nowrap;
+}
+table {
+	border-spacing: 10px;
+	border-collapse: separate;
+}
+.delete {
+	transition: 0.5s ease;
+}
+.delete:hover {
+	scale: 10;
+	cursor: pointer;
+}
+
+.modal-backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.5);
+	display: grid;
+	place-items: center;
+}
+
+.modal-content {
+	background: rgba(255, 255, 255, 1);
+	padding: 20px;
+	border-radius: 8px;
+	max-width: 500px;
+	width: 90%;
+	min-height: 300px;
+	min-width: 300px;
+	color: black;
+	display: grid;
+	place-items: center;
+}
+form {
+	display: flex;
+	flex-direction: column;
+	* {
+		margin: 5px;
+	}
+	button,
+	input {
+		border: black 2px solid;
+		border-radius: 8px;
+		padding: 5px;
+	}
+
+	h2 {
+		text-align: center;
+		font: 30px;
+	}
+}
+
+.paulward {
+	display: grid;
+	place-items: center;
+	button {
+		border: 1px solid white;
+		border-radius: 8px;
+		padding: 5px;
+	}
+}

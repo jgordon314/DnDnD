@@ -1,10 +1,27 @@
-# CS348-Final
-## Milestone 0 Requirements
-- README.txt to describe how to create and load your sample database on your chosen platform.
-You don’t have to use the datasets described in the report. Toy datasets (e.g., a single table) can
-be used.
-- Source code for your “hello world” type of simple database-driven applications with your sample
-database (e.g,. the application allows the user to connect to the database, to select some rows
-from a table, etc) This just ensures you have installed and tested the database systems and simple
-application code on school servers or your machines for your interested applications.
-- We will make sure the TA has access to your team’s repo after Milestone 0.
+#HOW TO DO STUFF
+
+1. install mysql [BOOYAH](https://dev.mysql.com/doc/mysql-getting-started/en/#mysql-getting-started-installing)
+
+2. download nodejs
+
+3. Create this table
+
+```sql
+      CREATE TABLE characters (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        health INT NOT NULL
+      );
+```
+
+4. create a .env file in the root folder with these values:
+
+```
+  DB_HOST=""
+  DB_USER=""
+  DB_PASSWORD=""
+  DB_NAME=""
+```
+
+5. run npm install
+6. npm run dev
