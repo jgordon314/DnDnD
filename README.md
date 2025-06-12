@@ -17,10 +17,10 @@
 4. create a .env file in the root folder with these values:
 
 ```
-  DB_HOST=""
-  DB_USER=""
-  DB_PASSWORD=""
-  DB_NAME=""
+  DB_HOST="localhost"
+  DB_USER="ur stuff"
+  DB_PASSWORD="ur stuff"
+  DB_NAME="ur stuff"
 ```
 
 5. run npm install
