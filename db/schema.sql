@@ -58,6 +58,9 @@ CREATE TABLE Spells (
   level INT UNSIGNED NOT NULL DEFAULT 0,
   description TEXT, 
   skill_delta_id INT UNSIGNED NOT NULL,
+  casting_time VARCHAR(100),
+  range VARCHAR(100),
+  components TEXT,
   PRIMARY KEY(id),
   FOREIGN KEY (skill_delta_id) REFERENCES SkillDeltas(id)
 
@@ -67,7 +70,7 @@ CREATE TABLE Spells (
 CREATE TABLE Items (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
-  description TEXT,
+  description JSON,
   skill_delta_id INT UNSIGNED NOT NULL UNIQUE,
   PRIMARY KEY (id),
   FOREIGN KEY(skill_delta_id) REFERENCES SkillDeltas(id)
@@ -96,6 +99,9 @@ CREATE TABLE CharacterSpellList (
 CREATE TABLE CharacterAbilities (
   character_id INT UNSIGNED NOT NULL,
   ability_id INT UNSIGNED NOT NULL,
+  activation_count INT UNSIGNED DEFAULT 0 NOT NULL, 
+  max_uses INT,
+  available_uses INT,
   PRIMARY KEY(character_id, ability_id),
   FOREIGN KEY(character_id) REFERENCES Characters(id),
   FOREIGN KEY(ability_id) REFERENCES Abilities(id)
@@ -105,6 +111,7 @@ CREATE TABLE CharacterInventory (
   character_id INT UNSIGNED NOT NULL,
   item_id INT UNSIGNED NOT NULL,
   quantity INT DEFAULT 0 NOT NULL,
+  activation_count INT DEFAULT 0 NOT NULL,
   PRIMARY KEY (item_id, character_id),
   FOREIGN KEY(character_id) REFERENCES Characters(id),
   FOREIGN KEY (item_id) REFERENCES Items(id)
