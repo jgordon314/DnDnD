@@ -43,10 +43,11 @@ CREATE TABLE Characters
 (
   id INT unsigned NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL UNIQUE,
-  description TEXT, 
+  description TEXT NOT NULL, 
   user_id int UNSIGNED NOT NULL,
-  base_stat_id int UNSIGNED NOT NULL,
+  base_stat_id int UNSIGNED NOT NULL UNIQUE,
   PRIMARY KEY(id),
+  UNIQUE (user_id, name),
   FOREIGN KEY(user_id) REFERENCES Users(id),
   FOREIGN KEY(base_stat_id) REFERENCES SkillDeltas(id)
 );
@@ -56,12 +57,12 @@ CREATE TABLE Spells (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
   level INT UNSIGNED NOT NULL DEFAULT 0,
-  description TEXT, 
+  description TEXT NOT NULL, 
   duration INT DEFAULT 0,
-  skill_delta_id INT UNSIGNED,
-  casting_time VARCHAR(100),
-  spellRange VARCHAR(100),
-  components TEXT,
+  skill_delta_id INT UNSIGNED UNIQUE,
+  casting_time VARCHAR(100) NOT NULL,
+  range VARCHAR(100) NOT NULL,
+  components TEXT NOT NULL,
   PRIMARY KEY(id),
   FOREIGN KEY (skill_delta_id) REFERENCES SkillDeltas(id)
 
@@ -71,7 +72,7 @@ CREATE TABLE Spells (
 CREATE TABLE Items (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
-  description JSON,
+  description TEXT NOT NULL,
   ability_id INT UNSIGNED,
   PRIMARY KEY (id),
   FOREIGN KEY (ability_id) REFERENCES Abilities(id)
@@ -81,9 +82,9 @@ CREATE TABLE Items (
 CREATE TABLE Abilities (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
-  description TEXT,
+  description TEXT NOT NULL,
   skill_delta_id INT UNSIGNED UNIQUE,
-  type INT UNSIGNED NOT NULL,
+  type ENUM('non-action', 'action', 'bonus-action', 'reaction', 'free-action') NOT NULL,
   PRIMARY KEY(id),
   FOREIGN KEY(skill_delta_id) REFERENCES SkillDeltas(id)
 );
@@ -91,7 +92,7 @@ CREATE TABLE Abilities (
 CREATE TABLE CharacterSpellList (
   character_id INT UNSIGNED NOT NULL,
   spell_id INT UNSIGNED NOT NULL,
-  activations INT DEFAULT 0,
+  activations INT DEFAULT 0 NOT NULL,
   PRIMARY KEY(character_id, spell_id),
   FOREIGN KEY(character_id) REFERENCES Characters(id),
   FOREIGN KEY(spell_id) REFERENCES Spells(id)
