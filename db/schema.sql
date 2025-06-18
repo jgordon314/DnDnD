@@ -57,9 +57,10 @@ CREATE TABLE Spells (
   name VARCHAR(100) NOT NULL,
   level INT UNSIGNED NOT NULL DEFAULT 0,
   description TEXT, 
-  skill_delta_id INT UNSIGNED NOT NULL,
+  duration INT DEFAULT 0,
+  skill_delta_id INT UNSIGNED,
   casting_time VARCHAR(100),
-  range VARCHAR(100),
+  spellRange VARCHAR(100),
   components TEXT,
   PRIMARY KEY(id),
   FOREIGN KEY (skill_delta_id) REFERENCES SkillDeltas(id)
@@ -71,9 +72,11 @@ CREATE TABLE Items (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
   description JSON,
-  skill_delta_id INT UNSIGNED NOT NULL UNIQUE,
+  skill_delta_id INT UNSIGNED,
+  ability_id INT UNSIGNED,
   PRIMARY KEY (id),
   FOREIGN KEY(skill_delta_id) REFERENCES SkillDeltas(id)
+  FOREIGN KEY (ability_id) REFERENCES Abilities(id)
 );
 
 
@@ -81,7 +84,7 @@ CREATE TABLE Abilities (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
   description TEXT,
-  skill_delta_id INT UNSIGNED NOT NULL UNIQUE,
+  skill_delta_id INT UNSIGNED UNIQUE,
   type INT UNSIGNED NOT NULL,
   PRIMARY KEY(id),
   FOREIGN KEY(skill_delta_id) REFERENCES SkillDeltas(id)
