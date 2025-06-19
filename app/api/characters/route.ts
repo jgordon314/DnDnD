@@ -5,7 +5,7 @@ export async function GET() {
 		const [rows] = await conn.query("SELECT * FROM characters");
 		return NextResponse.json(rows);
 	} catch (error) {
-		return NextResponse.error();
+		return NextResponse.error({ status: 500 });
 	}
 }
 
@@ -16,6 +16,6 @@ export async function POST(request: Request) {
 		await conn.query("INSERT INTO characters (name, health) VALUES (?, ?)", [name, health]);
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		return NextResponse.error;
+		return NextResponse.error({ status: 500 });
 	}
 }
