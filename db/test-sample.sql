@@ -1,6 +1,6 @@
 -- R6
-SELECT id FROM Users WHERE username = ‘that_yuck’ AND password = ‘Amogus32!’;
-INSERT INTO Users (username, password) VALUES (‘billybin’, ‘aceattorney222’);
+SELECT id FROM Users WHERE username = 'that_yuck' AND password = 'Amogus32!';
+INSERT INTO Users (username, password) VALUES ('billybin', 'aceattorney222');
 
 -- R7
 SELECT * FROM Characters WHERE user_id = 2; 
