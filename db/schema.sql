@@ -72,10 +72,8 @@ CREATE TABLE Items (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
   description JSON,
-  skill_delta_id INT UNSIGNED,
   ability_id INT UNSIGNED,
   PRIMARY KEY (id),
-  FOREIGN KEY(skill_delta_id) REFERENCES SkillDeltas(id)
   FOREIGN KEY (ability_id) REFERENCES Abilities(id)
 );
 
