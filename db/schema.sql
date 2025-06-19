@@ -1,11 +1,11 @@
-CREATE TABLE Users 
-(
+DROP TABLE IF EXISTS CharacterInventory, CharacterAbilities, CharacterSpellList, Items, Abilities, Spells, Characters, SkillDeltas, Users;
+
+CREATE TABLE Users (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   username VARCHAR(100) NOT NULL UNIQUE,
   password VARCHAR(100) NOT NULL,
   PRIMARY KEY(id)
 );
-
 
 CREATE TABLE SkillDeltas (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -39,11 +39,10 @@ CREATE TABLE SkillDeltas (
   PRIMARY KEY(id)
 );
 
-CREATE TABLE Characters 
-(
+CREATE TABLE Characters (
   id INT unsigned NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL UNIQUE,
-  description TEXT NOT NULL, 
+  description TEXT NOT NULL,
   user_id int UNSIGNED NOT NULL,
   base_stat_id int UNSIGNED NOT NULL UNIQUE,
   PRIMARY KEY(id),
@@ -57,27 +56,16 @@ CREATE TABLE Spells (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
   level INT UNSIGNED NOT NULL DEFAULT 0,
-  description TEXT NOT NULL, 
+  description TEXT NOT NULL,
   duration INT DEFAULT 0,
   skill_delta_id INT UNSIGNED UNIQUE,
-  casting_time VARCHAR(100) NOT NULL,
-  range VARCHAR(100) NOT NULL,
+  casting_time VARCHAR(100) NOT NULL DEFAULT '',
+  spell_range VARCHAR(100) NOT NULL DEFAULT '',
   components TEXT NOT NULL,
   PRIMARY KEY(id),
   FOREIGN KEY (skill_delta_id) REFERENCES SkillDeltas(id)
 
 );
-
-
-CREATE TABLE Items (
-  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  name VARCHAR(100) NOT NULL,
-  description TEXT NOT NULL,
-  ability_id INT UNSIGNED,
-  PRIMARY KEY (id),
-  FOREIGN KEY (ability_id) REFERENCES Abilities(id)
-);
-
 
 CREATE TABLE Abilities (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -87,6 +75,15 @@ CREATE TABLE Abilities (
   type ENUM('non-action', 'action', 'bonus-action', 'reaction', 'free-action') NOT NULL,
   PRIMARY KEY(id),
   FOREIGN KEY(skill_delta_id) REFERENCES SkillDeltas(id)
+);
+
+CREATE TABLE Items (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  description TEXT NOT NULL,
+  ability_id INT UNSIGNED,
+  PRIMARY KEY (id),
+  FOREIGN KEY (ability_id) REFERENCES Abilities(id)
 );
 
 CREATE TABLE CharacterSpellList (
