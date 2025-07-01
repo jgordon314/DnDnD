@@ -1,27 +1,41 @@
-#HOW TO DO STUFF
+# DDD (Dungeons and Dragons and Databases)
 
-1. install mysql [BOOYAH](https://dev.mysql.com/doc/mysql-getting-started/en/#mysql-getting-started-installing)
+## How to setup
 
-2. download nodejs
+### Pre-requisites
 
-3. Create this table
+- Install [Docker](https://docs.docker.com/get-started/get-docker/) or compatible tools
+- Install [MySQL Client Tools](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)
 
-```sql
-      CREATE TABLE characters (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        health INT NOT NULL
-      );
+### Setup `.env`
+
+Copy `.env.example` into `.env`. Update all `changeme` values to appropriate values. In develop any value suffices.
+
+### Launch the development server
+
+```bash
+docker compose up -d
 ```
 
-4. create a .env file in the root folder with these values:
+### Load the sample data
 
-```
-  DB_HOST="localhost"
-  DB_USER="ur stuff"
-  DB_PASSWORD="ur stuff"
-  DB_NAME="ur stuff"
+```bash
+mysql -u [username] -p -h localhost -P 3306 --skip-ssl [database name]
 ```
 
-5. run npm install
-6. npm run dev
+Type in the password you configure earlier when prompted.
+
+When prompted run the following MySQL file:
+
+```mysql
+SOURCE db/fixtures/load_sample.sql;
+quit
+```
+
+### Access the application
+
+Go to http://localhost:3000 to access your platform.
+
+## Supported Features
+
+TODO
