@@ -64,7 +64,6 @@ CREATE TABLE Spells (
   components TEXT NOT NULL,
   PRIMARY KEY(id),
   FOREIGN KEY (skill_delta_id) REFERENCES SkillDeltas(id)
-
 );
 
 CREATE TABLE Abilities (
