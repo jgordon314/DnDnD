@@ -20,8 +20,11 @@ characterMinItemNum = 0 # fewest number of spells a character would have
 characterMaxItemNum = 20 # greatest number of spells a character would have
 
 # don't change these
-skillDeltaCount = 0
-abilityCount = numAbilities
+characterCount = 0
+itemCount = 0
+spellCount = 0
+skillDeltaCount = 1
+abilityCount = 1
 
 load_dotenv(find_dotenv())
 API_KEY = os.environ.get("API_KEY")
@@ -33,13 +36,13 @@ instructions = [
 
 def generate_Users():
     os.makedirs("prod", exist_ok=True)
-    file = open("prod/create_users.sql", 'w')
+    file = open("prod/1_create_users.sql", 'w')
     file.write("")
     file.close()
-    file = open("prod/create_users.sql", 'a')
+    file = open("prod/1_create_users.sql", 'a')
     usernameList = ['']
     username = ''
-    for x in range(numUsers):
+    for x in range(1, numUsers+1):
         while username in usernameList:
             username = ''.join(random.choice(string.ascii_lowercase) for i in range(5))   
         usernameList.append(username)
@@ -49,23 +52,23 @@ def generate_Users():
     
 def clear_SkillDeltas():
     os.makedirs("prod", exist_ok=True)
-    file = open("prod/create_deltas.sql", 'w')
+    file = open("prod/2_create_deltas.sql", 'w')
     file.write("")
     file.close()
 
 def clear_Abilities():
     os.makedirs("prod", exist_ok=True)
-    file = open("prod/create_abilities.sql", 'w')
+    file = open("prod/5_create_abilities.sql", 'w')
     file.write("")
     file.close()
 
 def generate_Characters():
-    global skillDeltaCount
+    global skillDeltaCount, characterCount
     os.makedirs("prod", exist_ok=True)
-    charFile = open("prod/create_characters.sql", 'w')
+    charFile = open("prod/3_create_characters.sql", 'w')
     charFile.write("")
-    charFile = open("prod/create_characters.sql", 'a')
-    skillFile = open("prod/create_deltas.sql", 'a') # assumes create_deltas already exists
+    charFile = open("prod/3_create_characters.sql", 'a')
+    skillFile = open("prod/2_create_deltas.sql", 'a') # assumes create_deltas already exists
     data = []
     messages = []
     instructions = [
@@ -123,9 +126,11 @@ def generate_Characters():
         # print(completion.choices[0].message.content.replace('’', "''"))
         data += json.loads(completion.choices[0].message.content.replace("'", "''").replace('’', "''"))
         print((i+1)*1000/numCharacters,'%')
-    for x in range(len(data)):
-        charFile.write("INSERT INTO Characters VALUES (%i, '%s', '%s', %i, %i);\n" % (x, data[x]["name"], data[x]["description"], random.randint(0, numUsers-1), skillDeltaCount))
-        skillDeltas = data[x]["stats"]
+    for x in range(1, 1+len(data)):
+        characterCount += 1
+        current = data[x-1]
+        charFile.write("INSERT INTO Characters VALUES (%i, '%s', '%s', %i, %i);\n" % (x, current["name"], current["description"], random.randint(1, numUsers), skillDeltaCount))
+        skillDeltas = current["stats"]
         while len(skillDeltas) < 27:
             skillDeltas.append(0)
         while len(skillDeltas) > 27:
@@ -136,12 +141,12 @@ def generate_Characters():
     skillFile.close()
 
 def generate_Spells():
-    global skillDeltaCount
+    global skillDeltaCount, spellCount
     os.makedirs("prod", exist_ok=True)
-    spellFile = open("prod/create_spells.sql", 'w')
+    spellFile = open("prod/4_create_spells.sql", 'w')
     spellFile.write("")
-    spellFile = open("prod/create_spells.sql", 'a')
-    skillFile = open("prod/create_deltas.sql", 'a') # assumes create_deltas already exists
+    spellFile = open("prod/4_create_spells.sql", 'a')
+    skillFile = open("prod/2_create_deltas.sql", 'a') # assumes create_deltas already exists
     data = []
     messages = []
     instructions = [
@@ -208,15 +213,17 @@ def generate_Spells():
         # print(completion.choices[0].message.content.replace("'", "''").replace('’', "''"))
         data += json.loads(completion.choices[0].message.content.replace("'", "''").replace('’', "''"))
         print((i+1)*1000/numSpells,'%')
-    for x in range(len(data)):
-        skill_delta = data[x].get("skill_delta", [])
+    for x in range(1, 1+len(data)):
+        spellCount += 1
+        current = data[x-1]
+        skill_delta = data[x-1].get("skill_delta", [])
         hasSkill_delta = len(skill_delta) != 0 and set(str(v) for v in skill_delta) & set("123456789")
         spellFile.write("INSERT INTO Spells VALUES (%i, '%s', %i, '%s', %i, %s, '%s', '%s', '%s');\n" % (
-            x, data[x]["name"], data[x]["level"], data[x]["description"], data[x]["duration"], 
-            str(skillDeltaCount) if hasSkill_delta else "NULL", data[x]["casting_time"], data[x]["spell_range"], data[x]["components"]
+            x, current["name"], current["level"], current["description"], current["duration"], 
+            str(skillDeltaCount) if hasSkill_delta else "NULL", current["casting_time"], current["spell_range"], current["components"]
         ))
         if hasSkill_delta:
-            skillDeltas = data[x]["skill_delta"]
+            skillDeltas = current["skill_delta"]
             while len(skillDeltas) < 27:
                 skillDeltas.append(0)
             while len(skillDeltas) > 27:
@@ -227,14 +234,14 @@ def generate_Spells():
     skillFile.close()
 
 def generate_Abilities():
-    global skillDeltaCount
+    global skillDeltaCount, abilityCount
     os.makedirs("prod", exist_ok=True)
-    abilityFile = open("prod/create_items.sql", 'w')
+    abilityFile = open("prod/6_create_items.sql", 'w')
     abilityFile.write("")
     abilityFile.close()
-    abilityFile = open("prod/create_items.sql", 'a')
-    abilityFile = open("prod/create_abilities.sql", 'a')
-    skillFile = open("prod/create_deltas.sql", 'a')
+    abilityFile = open("prod/6_create_items.sql", 'a')
+    abilityFile = open("prod/5_create_abilities.sql", 'a')
+    skillFile = open("prod/2_create_deltas.sql", 'a')
     data = []
     messages = []
     instructions = [
@@ -297,14 +304,16 @@ def generate_Abilities():
         # print(completion.choices[0].message.content.replace("'", "''").replace('’', "''"))
         data += json.loads(completion.choices[0].message.content.replace("'", "''").replace('’', "''"))
         print((i+1)*1000/numAbilities,'%')
-    for x in range(len(data)):
-        skill_delta = data[x].get("skill_delta", [])
+    for x in range(1, 1+len(data)):
+        abilityCount += 1
+        current = data[x-1]
+        skill_delta = current.get("skill_delta", [])
         hasSkill_delta = len(skill_delta) != 0 and set(str(v) for v in skill_delta) & set("123456789")
         abilityFile.write("INSERT INTO Abilities VALUES (%i, '%s', '%s', %s, '%s');\n" % (
-            x, data[x]["name"], data[x]["description"], str(skillDeltaCount) if hasSkill_delta else "NULL", data[x]["type"]
+            x, current["name"], current["description"], str(skillDeltaCount) if hasSkill_delta else "NULL", current["type"]
         ))
         if hasSkill_delta:
-            skillDeltas = data[x]["skill_delta"]
+            skillDeltas = current["skill_delta"]
             while len(skillDeltas) < 27:
                 skillDeltas.append(0)
             while len(skillDeltas) > 27:
@@ -315,14 +324,14 @@ def generate_Abilities():
     skillFile.close()
 
 def generate_Items():
-    global skillDeltaCount, abilityCount
+    global skillDeltaCount, abilityCount, itemCount
     os.makedirs("prod", exist_ok=True)
-    itemFile = open("prod/create_items.sql", 'w')
+    itemFile = open("prod/6_create_items.sql", 'w')
     itemFile.write("")
     itemFile.close()
-    itemFile = open("prod/create_items.sql", 'a')
-    abilityFile = open("prod/create_abilities.sql", 'a')
-    skillFile = open("prod/create_deltas.sql", 'a')
+    itemFile = open("prod/6_create_items.sql", 'a')
+    abilityFile = open("prod/5_create_abilities.sql", 'a')
+    skillFile = open("prod/2_create_deltas.sql", 'a')
     data = []
     messages = []
     instructions = [
@@ -394,22 +403,26 @@ def generate_Items():
         # print(completion.choices[0].message.content.replace("'", "''"))
         data += json.loads(completion.choices[0].message.content.replace("'", "''").replace('’', "''"))
         print((i+1)*1000/numItems,'%')
-    for x in range(len(data)):
-        hasAbility = len(data[x]["ability"]) != 0
+    for x in range(1,1+len(data)):
+        itemCount += 1
+        current = data[x-1]
+        hasAbility = len(current["ability"]) != 0
         itemFile.write("INSERT INTO Items VALUES (%i, '%s', '%s', %s);\n" % (
-            x, data[x]["name"], data[x]["description"], str(abilityCount) if hasAbility else "NULL"
+            x, current["name"], current["description"], str(abilityCount) if hasAbility else "NULL"
         ))
         if hasAbility:
-            skill_delta = data[x]["ability"].get("skill_delta", [])
+            skill_delta = current["ability"].get("skill_delta", [])
             hasSkill_delta = len(skill_delta) != 0 and set(str(v) for v in skill_delta) & set("123456789")
             abilityFile.write("INSERT INTO Abilities VALUES (%i, '%s', '%s', %s, '%s');\n" % (
-                abilityCount, data[x]["ability"]["name"], data[x]["ability"]["description"], str(skillDeltaCount) if hasSkill_delta else "NULL", data[x]["ability"]["type"]
+                abilityCount, current["ability"]["name"], current["ability"]["description"], str(skillDeltaCount) if hasSkill_delta else "NULL", current["ability"]["type"]
             ))
             abilityCount += 1
             if hasSkill_delta:
-                skillDeltas = data[x]["ability"]["skill_delta"]
-                while len(skillDeltas) < 26:
+                skillDeltas = current["ability"]["skill_delta"]
+                while len(skillDeltas) < 27:
                     skillDeltas.append(0)
+                while len(skillDeltas) > 27:
+                    skillDeltas.pop()
                 skillFile.write("INSERT INTO SkillDeltas VALUES (%i, %s);\n"%(skillDeltaCount, str(skillDeltas)[1:-1]))
                 skillDeltaCount += 1
     itemFile.close()
@@ -418,51 +431,51 @@ def generate_Items():
 
 def give_spells():
     os.makedirs("prod", exist_ok=True)
-    file = open("prod/create_character_spell_list.sql", 'w')
+    file = open("prod/7_create_character_spell_list.sql", 'w')
     file.write("")
     file.close()
-    file = open("prod/create_character_spell_list.sql", 'a')
-    for x in range(numCharacters):
+    file = open("prod/7_create_character_spell_list.sql", 'a')
+    for x in range(1, 1+numCharacters):
         abilityList = []
-        abilityNum = random.randint(0, numSpells - 1)
+        abilityNum = random.randint(1, spellCount)
         for y in range(random.randint(characterMinSpellNum, characterMaxSpellNum)):
             while abilityNum in abilityList:
-                abilityNum = random.randint(0, numSpells - 1)
+                abilityNum = random.randint(1, spellCount)
             abilityList.append(abilityNum)
-            file.write("INSERT INTO Users VALUES (%i, %i, %i);\n" % (x, abilityNum, random.randint(0, 3)))
+            file.write("INSERT INTO CharacterSpellList VALUES (%i, %i, %i);\n" % (x, abilityNum, random.randint(0, 3)))
     file.close()
 
 def give_abilities():
     os.makedirs("prod", exist_ok=True)
-    file = open("prod/create_character_ability_list.sql", 'w')
+    file = open("prod/8_create_character_ability_list.sql", 'w')
     file.write("")
     file.close()
-    file = open("prod/create_character_ability_list.sql", 'a')
-    for x in range(numCharacters):
+    file = open("prod/8_create_character_ability_list.sql", 'a')
+    for x in range(1,1+characterCount):
         abilityList = []
-        abilityNum = random.randint(0, numAbilities - 1)
+        abilityNum = random.randint(1, numAbilities)
         for y in range(random.randint(characterMinAbilityNum, characterMaxAbilityNum)):
             while abilityNum in abilityList:
-                abilityNum = random.randint(0, numAbilities - 1)
+                abilityNum = random.randint(1, numAbilities)
             abilityList.append(abilityNum)
             useNum = random.randint(1, 6)
-            file.write("INSERT INTO Users VALUES (%i, %i, %i, %i);\n" % (x, abilityNum, useNum, random.randint(0, useNum)))
+            file.write("INSERT INTO CharacterAbilities VALUES (%i, %i, %i, %i, %i);\n" % (x, abilityNum, random.randint(0,3), useNum, random.randint(0, useNum)))
     file.close()
 
 def give_items():
     os.makedirs("prod", exist_ok=True)
-    file = open("prod/create_character_inventory.sql", 'w')
+    file = open("prod/9_create_character_inventory.sql", 'w')
     file.write("")
     file.close()
-    file = open("prod/create_character_inventory.sql", 'a')
-    for x in range(numCharacters):
+    file = open("prod/9_create_character_inventory.sql", 'a')
+    for x in range(1, 1+numCharacters):
         abilityList = []
-        abilityNum = random.randint(0, numItems - 1)
+        abilityNum = random.randint(1, itemCount)
         for y in range(random.randint(characterMinSpellNum, characterMaxSpellNum)):
             while abilityNum in abilityList:
-                abilityNum = random.randint(0, numItems - 1)
+                abilityNum = random.randint(1, itemCount)
             abilityList.append(abilityNum)
-            file.write("INSERT INTO Users VALUES (%i, %i, %i, %i);\n" % (x, abilityNum, random.randint(1, 3), random.randint(0, 3)))
+            file.write("INSERT INTO CharacterInventory VALUES (%i, %i, %i, %i);\n" % (x, abilityNum, random.randint(1, 3), random.randint(0, 3)))
     file.close()
 
 clear_SkillDeltas()
