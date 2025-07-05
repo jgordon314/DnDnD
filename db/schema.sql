@@ -41,7 +41,7 @@ CREATE TABLE SkillDeltas (
 
 CREATE TABLE Characters (
   id INT unsigned NOT NULL AUTO_INCREMENT,
-  name VARCHAR(100) NOT NULL UNIQUE,
+  name VARCHAR(100) NOT NULL,
   description TEXT NOT NULL,
   user_id int UNSIGNED NOT NULL,
   base_stat_id int UNSIGNED NOT NULL UNIQUE,

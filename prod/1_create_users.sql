@@ -1,0 +1,10 @@
+INSERT INTO Users VALUES (1, 'mwgrk', '13104');
+INSERT INTO Users VALUES (2, 'iyyjf', '75997');
+INSERT INTO Users VALUES (3, 'lclie', '91589');
+INSERT INTO Users VALUES (4, 'dcrof', '37957');
+INSERT INTO Users VALUES (5, 'sntmu', '53489');
+INSERT INTO Users VALUES (6, 'mcmav', '96655');
+INSERT INTO Users VALUES (7, 'vzpyz', '74217');
+INSERT INTO Users VALUES (8, 'sxjee', '25285');
+INSERT INTO Users VALUES (9, 'mygle', '37942');
+INSERT INTO Users VALUES (10, 'hvyen', '90272');
