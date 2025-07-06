@@ -1,0 +1,155 @@
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MySQL connection id is 15
+Server version: 9.3.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MySQL [changeme]> source prod/tests/test_prod.sql
+Query OK, 1 row affected (0.001 sec)
+
++----+----------+
+| id | username |
++----+----------+
+|  1 | mwgrk    |
++----+----------+
+1 row in set (0.000 sec)
+
+Query OK, 1 row affected (0.001 sec)
+
++----+----------+
+| id | username |
++----+----------+
+| 11 | billnye  |
++----+----------+
+1 row in set (0.000 sec)
+
+Query OK, 0 rows affected (0.019 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++----+------------------+---------------------------------------------------------------------------+---------+--------------+
+| id | name             | description                                                               | user_id | base_stat_id |
++----+------------------+---------------------------------------------------------------------------+---------+--------------+
+|  2 | Elara Moonshadow | A 3rd-level Elf Rogue with a talent for stealth and subterfuge.           |       2 |            2 |
+|  8 | Kara Dawnsinger  | A 3rd-level Half-Elf Cleric devoted to healing and supporting her allies. |       2 |            8 |
+| 21 | Thalindra        | Level 5 Elven Sorcerer, skilled in elemental magic.                       |       2 |           21 |
++----+------------------+---------------------------------------------------------------------------+---------+--------------+
+3 rows in set (0.000 sec)
+
+Query OK, 0 rows affected (0.000 sec)
+
+Query OK, 1 row affected (0.000 sec)
+
+Query OK, 1 row affected (0.000 sec)
+
+Query OK, 0 rows affected (0.002 sec)
+
++----------+-------+-----------------------------------+
+| name     | level | description                       |
++----------+-------+-----------------------------------+
+| Firebolt |     0 | A bolt of fire deals 1d10 damage. |
++----------+-------+-----------------------------------+
+1 row in set (0.000 sec)
+
+Query OK, 0 rows affected (0.000 sec)
+
+Query OK, 1 row affected (0.000 sec)
+
+Query OK, 1 row affected (0.000 sec)
+
+Query OK, 1 row affected (0.000 sec)
+
+Query OK, 0 rows affected (0.001 sec)
+
++----------------+----------------------------+--------------+--------------+----------------------------------------------+
+| item_name      | item_description           | ability_name | ability_type | ability_description                          |
++----------------+----------------------------+--------------+--------------+----------------------------------------------+
+| Healing Potion | Effect: Restore 2d4 + 2 HP | Wind Dancer  | non-action   | You gain a +10 bonus to your movement speed. |
++----------------+----------------------------+--------------+--------------+----------------------------------------------+
+1 row in set (0.000 sec)
+
+Query OK, 0 rows affected (0.000 sec)
+
+Query OK, 1 row affected (0.000 sec)
+
+Query OK, 1 row affected (0.000 sec)
+
+Query OK, 0 rows affected (0.001 sec)
+
++------+--------+-------------------------------------+
+| name | type   | description                         |
++------+--------+-------------------------------------+
+| Rage | action | Enter a frenzied rage for 1 minute. |
++------+--------+-------------------------------------+
+1 row in set (0.000 sec)
+
+Query OK, 0 rows affected (0.002 sec)
+
++--------------+------------------+-------------------------+
+| character_id | character_name   | character_base_charisma |
++--------------+------------------+-------------------------+
+|            4 | Xandril the Wise |                      16 |
++--------------+------------------+-------------------------+
+1 row in set (0.000 sec)
+
+Query OK, 1 row affected (0.002 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
++--------------+------------------+-------------------------+
+| character_id | character_name   | character_base_charisma |
++--------------+------------------+-------------------------+
+|            4 | Xandril the Wise |                      19 |
++--------------+------------------+-------------------------+
+1 row in set (0.000 sec)
+
+Query OK, 0 rows affected (0.002 sec)
+
+Query OK, 0 rows affected (0.016 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.014 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.014 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.013 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+ERROR 1062 (23000) at line 93 in file: 'prod/tests/test_prod.sql': Duplicate entry '2-3' for key 'CharacterSpellList.PRIMARY'
++------------------+----------------------+-------------+
+| charcter_name    | spell_name           | activations |
++------------------+----------------------+-------------+
+| Elara Moonshadow | Whispers of the Mind |           3 |
+| Elara Moonshadow | Thunderous Step      |           0 |
+| Elara Moonshadow | Frostbite Aura       |           1 |
+| Elara Moonshadow | Aura of Clarity      |           0 |
+| Elara Moonshadow | Empowered Strike     |           1 |
++------------------+----------------------+-------------+
+5 rows in set (0.001 sec)
+
+ERROR 1062 (23000) at line 98 in file: 'prod/tests/test_prod.sql': Duplicate entry '6-3' for key 'CharacterInventory.PRIMARY'
++---------------------+----------------------+---------------+
+| charcter_name       | item_name            | item_quantity |
++---------------------+----------------------+---------------+
+| Fennian Brightstone | Frostfire Blade      |             2 |
+| Fennian Brightstone | Ring of Shadows      |             3 |
+| Fennian Brightstone | Cloak of the Phoenix |             3 |
+| Fennian Brightstone | Boots of the Cat     |             1 |
+| Fennian Brightstone | Shield of Resilience |             3 |
++---------------------+----------------------+---------------+
+5 rows in set (0.000 sec)
+
+ERROR 1062 (23000) at line 103 in file: 'prod/tests/test_prod.sql': Duplicate entry '4-9' for key 'CharacterAbilities.PRIMARY'
++------------------+----------------------+
+| charcter_name    | ability_name         |
++------------------+----------------------+
+| Xandril the Wise | Healing Aura         |
+| Xandril the Wise | Inspirational Speech |
+| Xandril the Wise | Frostbite            |
+| Xandril the Wise | Shadow Step          |
++------------------+----------------------+
+4 rows in set (0.000 sec)
+
+MySQL [changeme]> 
