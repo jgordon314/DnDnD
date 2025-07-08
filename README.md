@@ -38,4 +38,6 @@ Go to http://localhost:3000 to access your platform.
 
 ## Supported Features
 
-TODO
+R6. Users creating an account and logging in/out
+R7. Users viewing a list of their created characters
+R9. Users changing skills for their created characters
