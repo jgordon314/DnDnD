@@ -123,6 +123,3 @@ INSERT INTO CharacterAbilities (character_id, ability_id) VALUES (4, 9);
 SELECT Characters.name AS charcter_name, Abilities.name AS ability_name
 FROM Characters, Abilities, CharacterAbilities
 WHERE Characters.id = 4 AND Characters.id = CharacterAbilities.character_id AND Abilities.id = CharacterAbilities.ability_id;
-
-
-
