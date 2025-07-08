@@ -1,7 +1,8 @@
-import NextAuth from "next-auth";
+import NextAuth, { getServerSession, NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import conn from "@/app/lib/db";
 import { RowDataPacket } from "mysql2";
+import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next/types";
 
 interface DbUser extends RowDataPacket {
 	id: number;
@@ -9,7 +10,7 @@ interface DbUser extends RowDataPacket {
 	password: string;
 }
 
-const handler = NextAuth({
+const authConfig = {
 	providers: [
 		CredentialsProvider({
 			name: "Credentials",
@@ -22,9 +23,11 @@ const handler = NextAuth({
 					if (!credentials?.username || !credentials?.password) return null;
 
 					const [rows] = await conn.query<DbUser[]>(
-						"SELECT id, username, password FROM users WHERE username = ?",
+						"SELECT id, username, password FROM Users WHERE username = ?",
 						[credentials.username]
 					);
+
+					console.log(rows);
 
 					const user = rows[0];
 					if (!user) return null;
@@ -59,6 +62,21 @@ const handler = NextAuth({
 	},
 	session: { strategy: "jwt" },
 	pages: { signIn: "/login" },
-});
+} satisfies NextAuthOptions
 
-export { handler as GET, handler as POST };
+const handler = NextAuth(authConfig);
+
+function auth(
+  ...args:
+    | [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]
+    | [NextApiRequest, NextApiResponse]
+    | []
+) {
+  return getServerSession(...args, authConfig)
+}
+
+export {
+	handler as GET,
+	handler as POST,
+	auth
+};

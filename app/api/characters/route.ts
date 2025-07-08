@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 		const base_stat_id = result.insertId;
 
 		await conn.query(
-			"INSERT INTO characters (name, description, user_id, base_stat_id) VALUES (?, ?, ?, ?)",
+			"INSERT INTO Characters (name, description, user_id, base_stat_id) VALUES (?, ?, ?, ?)",
 			[name, description, user_id, base_stat_id]
 		);
 		return NextResponse.json({ success: true });

@@ -1,44 +1,11 @@
 "use client";
-import Image from "next/image";
 import "./../temp.css";
-import { SessionProvider, useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { FormEvent, useEffect, useState } from "react";
 import Modal from "./../modal";
-
-interface Character {
-	id: number;
-	name: string;
-}
-
-interface SkillDeltasInput {
-	armor_class: number;
-	current_health: number;
-	max_health: number;
-	strength: number;
-	dexterity: number;
-	intelligence: number;
-	wisdom: number;
-	charisma: number;
-	constitution: number;
-	athletics: number;
-	acrobatics: number;
-	sleight_of_hand: number;
-	stealth: number;
-	arcana: number;
-	history: number;
-	investigation: number;
-	nature: number;
-	religion: number;
-	animal_handling: number;
-	insight: number;
-	medicine: number;
-	perception: number;
-	survival: number;
-	deception: number;
-	intimidation: number;
-	performance: number;
-	persuasion: number;
-}
+import { type Character, type SkillDeltas } from "../types";
+import Link from 'next/link'
+import { zeroSkillDeltas } from "../lib/utils";
 
 export default function Home() {
 	const [characters, setCharacters] = useState<Character[]>([]);
@@ -46,35 +13,7 @@ export default function Home() {
 	const [name, setName] = useState("");
 	const { data: session } = useSession();
 	const [health, setHealth] = useState(0);
-	const [skillDeltas, setSkillDeltas] = useState<SkillDeltasInput>({
-		armor_class: 0,
-		current_health: 0,
-		max_health: 0,
-		strength: 0,
-		dexterity: 0,
-		intelligence: 0,
-		wisdom: 0,
-		charisma: 0,
-		constitution: 0,
-		athletics: 0,
-		acrobatics: 0,
-		sleight_of_hand: 0,
-		stealth: 0,
-		arcana: 0,
-		history: 0,
-		investigation: 0,
-		nature: 0,
-		religion: 0,
-		animal_handling: 0,
-		insight: 0,
-		medicine: 0,
-		perception: 0,
-		survival: 0,
-		deception: 0,
-		intimidation: 0,
-		performance: 0,
-		persuasion: 0,
-	});
+	const [skillDeltas, setSkillDeltas] = useState<SkillDeltas>(zeroSkillDeltas());
 	// Accept string or number, but always use number for player_id
 	const player_id: number | undefined = session?.user?.id ? Number(session.user.id) : undefined;
 
@@ -182,6 +121,7 @@ export default function Home() {
 			console.error("Failed to create character", errorText);
 		}
 	}
+
 	if (session) {
 		return (
 			<div className="paulward">
@@ -198,7 +138,11 @@ export default function Home() {
 						{characters.map((row: Character) => (
 							<tr key={row.id}>
 								<td>{row.id}</td>
-								<td>{row.name}</td>
+								<td>
+									<Link href={`/character/${row.id}`}>
+										{row.name}
+									</Link>
+								</td>
 								<td>
 									<button className="delete" onClick={() => handleDelete(row.id)}>
 										X
@@ -228,7 +172,7 @@ export default function Home() {
 										...["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"].map((key) => ({
 											key,
 											label: key.charAt(0).toUpperCase() + key.slice(1),
-											value: skillDeltas[key as keyof SkillDeltasInput],
+											value: skillDeltas[key as keyof SkillDeltas],
 										})),
 									].map(({ key, label, value }) => (
 										<label key={key} style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: 90 }}>
