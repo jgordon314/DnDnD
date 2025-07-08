@@ -8,7 +8,8 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
     ports:
       - 3000:3000
-    
+    volumes:
+      - ./app:/app/app
   db:
     image: mysql:9
     environment:
@@ -20,7 +21,5 @@ services:
       - 3306:3306
     volumes:
       - mysql-volume:/var/lib/mysql
-#     - ./my.cnf:/home/anthony/Programming/github/CS348-FINAL/mysql-init/my.cnf
-
 volumes:
   mysql-volume:
