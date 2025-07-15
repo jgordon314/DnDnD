@@ -8,6 +8,7 @@ import { SkillDeltasTable } from "./components/SkillDeltasTable";
 import { CharacterInventoryTable } from "./components/CharacterInventoryTable";
 import { CharacterAbilitiesTable } from "./components/CharacterAbilitiesTable";
 import { CharacterSpellsTable } from "./components/CharacterSpellsTable";
+import { CharacterItemAbilitiesTable } from "./components/CharacterItemAbilitiesTable";
 
 async function fetchBaseSkillDeltas(characterId: number): Promise<SkillDeltas> {
 	const fetchBaseSkillDeltasSQL = `
@@ -94,6 +95,10 @@ export default async function CharacterDetail({
 			<br />
 			<div>
 				<CharacterAbilitiesTable characterId={characterId} />
+			</div>
+			<br />
+			<div>
+				<CharacterItemAbilitiesTable characterId={characterId} />
 			</div>
 			<br />
 			<div>
