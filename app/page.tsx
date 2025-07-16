@@ -1,13 +1,7 @@
 "use client";
 import "./temp.css";
-import { SessionProvider, useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { redirect } from "next/navigation";
-
-interface Character {
-	id: number;
-	name: string;
-	health: number;
-}
 
 export default function Home() {
 	const { data: session, status } = useSession();
