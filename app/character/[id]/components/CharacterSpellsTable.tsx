@@ -1,5 +1,6 @@
 import conn from "@/app/lib/db";
 import { CharacterSpell, Spell } from "@/app/types";
+import { ActivateSpell } from "./ActivateSpell";
 
 
 export async function CharacterSpellsTable({
@@ -34,6 +35,7 @@ export async function CharacterSpellsTable({
                     <td>{row.casting_time}</td>
                     <td>{row.duration}</td>
                     <td>{row.activations}</td>
+                    <ActivateSpell characterId={characterId} spellId={row.id}/>
                 </tr>)}
             </tbody>
         </table>
