@@ -1,7 +1,7 @@
 'use server'
 
 import conn from "@/app/lib/db";
-import { SkillDeltas } from "@/app/types";
+import { SkillDeltas } from "@/app/lib/types";
 
 export async function updateCharacterBaseSkillDeltas(characterId: number, newSkillDeltas: SkillDeltas) {
     // TODO @HillcrestEnigma: Update this server action to take Partial<SkillDeltas>

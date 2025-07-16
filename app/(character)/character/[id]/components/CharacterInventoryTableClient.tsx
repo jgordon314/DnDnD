@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { CharacterItem, Item } from "@/app/types";
+import { CharacterItem, Item } from "@/app/lib/types";
 
 interface Props {
 	rows: (Item & CharacterItem)[];

@@ -1,5 +1,5 @@
 import conn from "@/app/lib/db";
-import { CharacterAbility, Ability } from "@/app/types";
+import { CharacterAbility, Ability } from "@/app/lib/types";
 import { CharacterAbilitiesTableClient } from "./CharacterAbilitiesTableClient";
 
 export async function CharacterAbilitiesTable({ characterId }: { characterId: number }) {

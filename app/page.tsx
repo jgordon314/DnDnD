@@ -1,27 +1,12 @@
-"use client";
-import "./temp.css";
-import { useSession, signIn } from "next-auth/react";
+import { auth } from "./api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 
-export default function Home() {
-	const { data: session, status } = useSession();
-
-	console.log("Home page - Session status:", status);
-	console.log("Home page - Session data:", session);
-
-	// Delay redirect to allow logging
-	if (status === "loading") {
-		return <div>Loading session...</div>;
-	}
+export default async function Home() {
+	const session = await auth();
 
 	if (session) {
-		console.log("Home page - Redirecting to character list");
-		redirect("/character_list");
+		redirect("/characters");
+	} else {
+		redirect("/auth/login");
 	}
-	return (
-		<>
-			Not signed in <br />
-			<button onClick={() => signIn()}>Sign in</button>
-		</>
-	);
 }

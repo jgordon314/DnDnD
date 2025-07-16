@@ -1,6 +1,5 @@
 import conn from "@/app/lib/db";
-import { CharacterSpell, Spell } from "@/app/types";
-import { ActivateSpell } from "./ActivateSpell";
+import { CharacterSpell, Spell } from "@/app/lib/types";
 import { CharacterSpellsTableClient } from "./CharacterSpellsTableClient";
 
 export async function CharacterSpellsTable({ characterId }: { characterId: number }) {

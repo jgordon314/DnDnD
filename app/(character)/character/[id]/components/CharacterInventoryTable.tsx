@@ -1,5 +1,5 @@
 import conn from "@/app/lib/db";
-import { CharacterItem, Item } from "@/app/types";
+import { CharacterItem, Item } from "@/app/lib/types";
 import { CharacterInventoryTableClient } from "./CharacterInventoryTableClient";
 
 export async function CharacterInventoryTable({ characterId }: { characterId: number }) {

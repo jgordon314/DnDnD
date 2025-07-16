@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Ability, CharacterAbility } from "@/app/types";
+import { Ability, CharacterAbility } from "@/app/lib/types";
 
 interface Props {
 	rows: (Ability & CharacterAbility)[];

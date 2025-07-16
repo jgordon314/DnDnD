@@ -1,3 +1,11 @@
+export type ID = number | string;
+
+export interface User {
+    id: number;
+    username: string;
+    password: string;
+}
+
 export interface Character {
 	id: number;
 	name: string;

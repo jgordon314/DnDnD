@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Spell, CharacterSpell } from "@/app/types";
+import { Spell, CharacterSpell } from "@/app/lib/types";
 
 interface Props {
 	rows: (Spell & CharacterSpell)[];

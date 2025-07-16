@@ -1,8 +1,8 @@
-import "../../temp.css";
 import { auth } from "@/app/api/auth/[...nextauth]/route";
 import conn from "@/app/lib/db";
-import { addSkillDeltas, skillLabelText } from "@/app/lib/utils";
-import { Character, SkillDeltas } from "@/app/types";
+import { addSkillDeltas } from "@/app/lib/models/skillDeltas";
+import { skillLabelText } from "@/app/lib/utils";
+import { Character, SkillDeltas } from "@/app/lib/types";
 import Link from "next/link";
 import { SkillDeltasTable } from "./components/SkillDeltasTable";
 import { CharacterInventoryTable } from "./components/CharacterInventoryTable";

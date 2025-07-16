@@ -1,7 +1,7 @@
 'use client'
 
 import { skillLabelText } from "@/app/lib/utils";
-import { SkillDeltas } from "@/app/types";
+import { SkillDeltas } from "@/app/lib/types";
 import { useState } from "react";
 import { updateCharacterBaseSkillDeltas } from "../actions";
 
