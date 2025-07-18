@@ -1,4 +1,4 @@
-# DDD (Dungeons and Dragons and Databases)
+# D&D&D (Dungeons and Dragons and Databases)
 
 ## How to setup
 
@@ -15,6 +15,12 @@ Copy `.env.example` into `.env`. Update all `changeme` values to appropriate val
 
 ```bash
 docker compose up -d
+```
+
+Alternatively:
+```bash
+npm install
+npm run dev
 ```
 
 ### Load the sample data
