@@ -7,27 +7,70 @@ interface Props {
 	characterId: number;
 }
 
-export function CharacterInventoryTableClient({ rows, characterId }: Props) {
+export function CharacterInventoryTableClient({ rows: initialRows, characterId }: Props) {
+	const [rows, setRows] = useState<(Item & CharacterItem)[]>(initialRows);
 	const [isPending, setPending] = useState<number | null>(null);
 
 	async function handleEquip(itemId: number) {
 		setPending(itemId);
-		await fetch("/api/equip", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ characterId, itemId }),
-		});
-		window.location.reload();
+		try {
+			const response = await fetch("/api/equip", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ characterId, itemId }),
+			});
+
+			if (response.ok) {
+				setRows(
+					rows.map((row) => {
+						if (row.id === itemId) {
+							return {
+								...row,
+								activation_count: 0, // Setting to 0 when equipped (not -1)
+							};
+						}
+						return row;
+					})
+				);
+			} else {
+				console.error("Failed to equip item:", await response.text());
+			}
+		} catch (error) {
+			console.error("Error equipping item:", error);
+		} finally {
+			setPending(null);
+		}
 	}
 
 	async function handleUnequip(itemId: number) {
 		setPending(itemId);
-		await fetch("/api/unequip", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ characterId, itemId }),
-		});
-		window.location.reload();
+		try {
+			const response = await fetch("/api/unequip", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ characterId, itemId }),
+			});
+
+			if (response.ok) {
+				setRows(
+					rows.map((row) => {
+						if (row.id === itemId) {
+							return {
+								...row,
+								activation_count: -1, // Setting back to -1 when unequipped
+							};
+						}
+						return row;
+					})
+				);
+			} else {
+				console.error("Failed to unequip item:", await response.text());
+			}
+		} catch (error) {
+			console.error("Error unequipping item:", error);
+		} finally {
+			setPending(null);
+		}
 	}
 
 	return (
