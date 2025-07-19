@@ -10,9 +10,18 @@ interface Character {
 }
 
 export default function Home() {
-	const { data: session } = useSession();
+	const { data: session, status } = useSession();
+
+	console.log("Home page - Session status:", status);
+	console.log("Home page - Session data:", session);
+
+	// Delay redirect to allow logging
+	if (status === "loading") {
+		return <div>Loading session...</div>;
+	}
 
 	if (session) {
+		console.log("Home page - Redirecting to character list");
 		redirect("/character_list");
 	}
 	return (

@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
+import CreateModal from "../../components/CreateModal";
 
 interface Column<T> {
 	header: string;
@@ -16,6 +17,8 @@ interface ListProps<T extends { id: number }> {
 	data: T[];
 	actions?: ActionConfig[];
 	characterId?: number;
+	type?: "ability" | "spell" | "item";
+	showCreateButton?: boolean;
 }
 
 export default function ListTable<T extends { id: number }>({
@@ -23,9 +26,25 @@ export default function ListTable<T extends { id: number }>({
 	data,
 	actions = [],
 	characterId,
+	type,
+	showCreateButton = false,
 }: ListProps<T>) {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
 	return (
 		<div>
+			{showCreateButton && type && (
+				<div className="flex justify-end mb-4">
+					<button
+						onClick={() => setIsModalOpen(true)}
+						className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600">
+						Create New {type.charAt(0).toUpperCase() + type.slice(1)}
+					</button>
+					{isModalOpen && (
+						<CreateModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} type={type} />
+					)}
+				</div>
+			)}
 			<table className="border-collapse border-spacing-0 w-full">
 				<thead>
 					<tr>

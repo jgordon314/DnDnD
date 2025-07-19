@@ -15,9 +15,15 @@ export default async function AbilityList({ params }: { params: { id?: string } 
 
 	const [rows] = await db.query(fetchAbilitiesSQL, characterId ? [characterId] : []);
 
+	// the ListTable needs something with id and i don't wanna fix it so we just make our own id
+	const mappedRows = (rows as any[]).map((row) => ({
+		...row,
+		id: row.aid,
+	}));
+
 	const columns = [
-		{ header: "Name", accessor: "name" as keyof Ability },
-		{ header: "Description", accessor: "description" as keyof Ability },
+		{ header: "Name", accessor: "name" as keyof (Ability & { id: number }) },
+		{ header: "Description", accessor: "description" as keyof (Ability & { id: number }) },
 	];
 
 	const actions = characterId
@@ -35,7 +41,7 @@ export default async function AbilityList({ params }: { params: { id?: string } 
 			{characterId && (
 				<p className="mb-4">Click the "Add to Character" button to add an ability to your character.</p>
 			)}
-			<ListTable columns={columns} data={rows as Ability[]} actions={actions} characterId={characterId} />
+			<ListTable columns={columns} data={mappedRows} actions={actions} characterId={characterId} />
 		</div>
 	);
 }
