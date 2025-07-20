@@ -6,7 +6,7 @@ export async function POST(request: Request) {
   const resetItemsSQL = `
     UPDATE CharacterInventory
     SET activation_count = 0
-    WHERE character_id = ?
+    WHERE character_id = ? AND activation_count > 0
   `;
   await conn.query(resetItemsSQL, [characterId]);
     const resetAbilitiesSQL = `
