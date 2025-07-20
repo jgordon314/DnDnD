@@ -1,6 +1,6 @@
 "use client";
 import "./../temp.css";
-import { useSession, signIn } from "next-auth/react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import { FormEvent, useEffect, useState } from "react";
 import Modal from "./../modal";
 import { type Character, type SkillDeltas } from "../types";
@@ -133,7 +133,28 @@ export default function Home() {
 	if (session) {
 		return (
 			<div className="paulward">
-				<h1>Signed in as: {session.user?.name}</h1>
+				<div
+					style={{
+						display: "flex",
+						justifyContent: "space-between",
+						alignItems: "center",
+						marginBottom: "20px",
+					}}>
+					<h1>Signed in as: {session.user?.name}</h1>
+					<button
+						onClick={() => signOut()}
+						style={{
+							margin: "5px",
+							padding: "8px 16px",
+							color: "white",
+							border: "none",
+							textDecoration: "underline",
+							borderRadius: "4px",
+							cursor: "pointer",
+						}}>
+						Logout
+					</button>
+				</div>
 				<table>
 					<caption>Character List</caption>
 					<thead>

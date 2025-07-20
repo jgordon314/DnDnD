@@ -79,6 +79,38 @@ export function CharacterAbilitiesTableClient({ rows: initialRows, characterId }
 		}
 	}
 
+	async function updateActivation(abilityId: number, delta: number) {
+		setPending(abilityId);
+		await fetch("/api/ability-activation", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ characterId, abilityId, delta }),
+		});
+		// Update local state for available_uses if not unlimited
+		setRows((prevRows) =>
+			prevRows.map((row) => {
+				if (row.ability_id === abilityId) {
+					let newAvailable = row.available_uses;
+					if (newAvailable !== null) {
+						newAvailable = Math.max(0, newAvailable - delta);
+					}
+					return {
+						...row,
+						activation_count: row.activation_count + delta,
+						available_uses:
+							row.available_uses !== null && delta > 0
+								? Math.max(0, row.available_uses - 1)
+								: row.available_uses !== null && delta < 0
+								? row.available_uses + 1
+								: row.available_uses,
+					};
+				}
+				return row;
+			})
+		);
+		setPending(null);
+	}
+
 	return (
 		<>
 			<table>
@@ -99,6 +131,45 @@ export function CharacterAbilitiesTableClient({ rows: initialRows, characterId }
 							<td>{row.max_uses === null ? "Unlimited" : row.max_uses}</td>
 							<td>{row.available_uses === null ? "Unlimited" : row.available_uses}</td>
 							<td className="flex space-x-2">
+								<button
+									style={{
+										marginRight: 8,
+										padding: "4px 12px",
+										borderRadius: 6,
+										background: "#0070f3",
+										color: "#fff",
+										border: "none",
+										cursor:
+											row.available_uses === null || row.available_uses > 0
+												? "pointer"
+												: "default",
+										opacity: row.available_uses === null || row.available_uses > 0 ? 1 : 0,
+										pointerEvents:
+											row.available_uses === null || row.available_uses > 0 ? "auto" : "none",
+									}}
+									disabled={
+										isPending === row.id ||
+										(row.available_uses !== null && row.available_uses === 0)
+									}
+									onClick={() => updateActivation(row.ability_id, 1)}>
+									+
+								</button>
+								<button
+									style={{
+										padding: "4px 12px",
+										borderRadius: 6,
+										background: "#e00",
+										color: "#fff",
+										border: "none",
+										cursor: row.activation_count > 0 ? "pointer" : "default",
+										opacity: row.activation_count > 0 ? 1 : 0,
+										pointerEvents: row.activation_count > 0 ? "auto" : "none",
+										marginRight: 8,
+									}}
+									disabled={isPending === row.id || row.activation_count === 0}
+									onClick={() => updateActivation(row.ability_id, -1)}>
+									-
+								</button>
 								<button
 									style={{
 										padding: "6px 16px",
