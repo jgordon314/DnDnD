@@ -42,36 +42,27 @@ export function CharacterInventoryTableClient({ rows: initialRows, characterId }
 		}
 	}
 
-	async function handleUnequip(itemId: number) {
-		setPending(itemId);
-		try {
-			const response = await fetch("/api/unequip", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ characterId, itemId }),
-			});
+async function handleUnequip(itemId: number) {
+	setPending(itemId);
+	try {
+		const response = await fetch("/api/unequip", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ characterId, itemId }),
+		});
 
-			if (response.ok) {
-				setRows(
-					rows.map((row) => {
-						if (row.id === itemId) {
-							return {
-								...row,
-								activation_count: -1, // Setting back to -1 when unequipped
-							};
-						}
-						return row;
-					})
-				);
-			} else {
-				console.error("Failed to unequip item:", await response.text());
-			}
-		} catch (error) {
-			console.error("Error unequipping item:", error);
-		} finally {
-			setPending(null);
+		if (response.ok) {
+			// Force a full page reload to refresh all data
+			window.location.reload();
+		} else {
+			console.error("Failed to unequip item:", await response.text());
 		}
+	} catch (error) {
+		console.error("Error unequipping item:", error);
+	} finally {
+		setPending(null);
 	}
+}
 
 	return (
 		<table>
