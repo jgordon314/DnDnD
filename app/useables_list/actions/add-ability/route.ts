@@ -6,6 +6,7 @@ import { auth } from "@/app/api/auth/[...nextauth]/route";
 export async function POST(request: Request) {
 	try {
 		const session = await auth();
+		console.log("Add ability session:", session);
 		if (!session?.user) {
 			return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
 		}
@@ -13,6 +14,7 @@ export async function POST(request: Request) {
 		const formData = await request.formData();
 		const abilityId = Number(formData.get("id"));
 		const characterId = Number(formData.get("characterId"));
+		console.log("Adding ability:", abilityId, "to character:", characterId);
 
 		if (!abilityId || !characterId) {
 			return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });

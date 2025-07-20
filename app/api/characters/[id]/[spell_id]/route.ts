@@ -2,7 +2,7 @@ import conn from "@/app/lib/db";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request, { params }: { params: { id: string, spell_id: string } }) {
-	const { id, spell_id } = await params;
+	const { id, spell_id } = params;
 	try {
         const activateSpellSQL = `
         UPDATE CharacterSpellList csi SET activations =

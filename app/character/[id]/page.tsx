@@ -49,14 +49,14 @@ async function calculateCumulativeSkillDeltas(characterId: number): Promise<Skil
 	return addSkillDeltas(...(rows as SkillDeltas[]));
 }
 
-export default async function CharacterDetail({ params }: { params: Promise<{ id: string }> }) {
+export default async function CharacterDetail({ params }: { params: { id: string } }) {
 	const session = await auth();
 
 	if (!session) {
 		return <>Not signed in</>;
 	}
 
-	const { id: paramCharacterId } = await params;
+	const { id: paramCharacterId } = params;
 	const characterId = +paramCharacterId;
 
 	const [characters] = await conn.query("SELECT * FROM Characters WHERE id = ?", [characterId]);

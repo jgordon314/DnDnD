@@ -115,8 +115,8 @@ export default function LinkAbilityForm({ onSubmit, onCancel, characters = [] }:
 								<option value="">Select an ability</option>
 								{abilities.map((ability) => (
 									<option
-										key={ability.aid || `ability-${Math.random()}`}
-										value={ability.aid}
+										key={ability.id || `ability-${Math.random()}`}
+										value={ability.id}
 										title={`${ability.name} (${ability.type})`}
 										className="text-ellipsis overflow-hidden">
 										{ability.name.length > 30

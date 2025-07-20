@@ -52,7 +52,7 @@ export async function POST(request: Request) {
 export async function GET() {
 	try {
 		const [abilities] = await conn.query(`
-			SELECT a.id as aid, a.name, a.description, a.type, a.skill_delta_id, sd.*
+			SELECT sd.*, a.id, a.name, a.description, a.type, a.skill_delta_id
 			FROM Abilities a
 			LEFT JOIN SkillDeltas sd ON a.skill_delta_id = sd.id
 		`);

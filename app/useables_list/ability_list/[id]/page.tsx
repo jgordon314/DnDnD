@@ -18,7 +18,7 @@ export default async function AbilityList({ params }: { params: { id?: string } 
 	// the ListTable needs something with id and i don't wanna fix it so we just make our own id
 	const mappedRows = (rows as any[]).map((row) => ({
 		...row,
-		id: row.aid,
+		id: row.id,
 	}));
 
 	const columns = [

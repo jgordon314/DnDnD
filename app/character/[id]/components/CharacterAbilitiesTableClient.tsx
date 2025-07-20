@@ -25,7 +25,7 @@ export function CharacterAbilitiesTableClient({ rows: initialRows, characterId }
 			});
 
 			if (response.ok) {
-				setRows(rows.filter((row) => row.aid !== abilityId));
+				setRows(rows.filter((row) => row.id !== abilityId));
 			} else {
 				console.error("Failed to remove ability:", await response.text());
 			}
@@ -46,14 +46,14 @@ export function CharacterAbilitiesTableClient({ rows: initialRows, characterId }
 	async function handleUpdateLimits() {
 		if (!selectedAbility) return;
 
-		setPending(selectedAbility.aid);
+		setPending(selectedAbility.id);
 		try {
 			const response = await fetch("/api/update-ability-limits", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					characterId,
-					abilityId: selectedAbility.aid,
+					abilityId: selectedAbility.id,
 					maxUses,
 					availableUses,
 				}),
@@ -63,7 +63,7 @@ export function CharacterAbilitiesTableClient({ rows: initialRows, characterId }
 				// Update the local state with the new values
 				setRows(
 					rows.map((row) =>
-						row.aid === selectedAbility.aid
+						row.id === selectedAbility.id
 							? { ...row, max_uses: maxUses, available_uses: availableUses }
 							: row
 					)
@@ -92,8 +92,8 @@ export function CharacterAbilitiesTableClient({ rows: initialRows, characterId }
 					</tr>
 				</thead>
 				<tbody>
-					{rows.map((row) => (
-						<tr key={row.aid}>
+					{rows.map((row, index) => (
+						<tr key={row.id || `ability-${row.ability_id}-${index}`}>
 							<td>{row.name}</td>
 							<td>{row.activation_count}</td>
 							<td>{row.max_uses === null ? "Unlimited" : row.max_uses}</td>
@@ -108,8 +108,8 @@ export function CharacterAbilitiesTableClient({ rows: initialRows, characterId }
 										border: "none",
 										cursor: "pointer",
 									}}
-									disabled={isPending === row.aid}
-									onClick={() => handleRemove(row.aid)}>
+									disabled={isPending === row.id}
+									onClick={() => handleRemove(row.id)}>
 									Remove
 								</button>
 								<button
@@ -121,7 +121,7 @@ export function CharacterAbilitiesTableClient({ rows: initialRows, characterId }
 										border: "none",
 										cursor: "pointer",
 									}}
-									disabled={isPending === row.aid}
+									disabled={isPending === row.id}
 									onClick={() => openLimitModal(row)}>
 									Set Limits
 								</button>
@@ -168,13 +168,13 @@ export function CharacterAbilitiesTableClient({ rows: initialRows, characterId }
 							<button
 								onClick={() => setShowLimitModal(false)}
 								className="px-4 py-2 border rounded"
-								disabled={isPending === selectedAbility.aid}>
+								disabled={isPending === selectedAbility.id}>
 								Cancel
 							</button>
 							<button
 								onClick={handleUpdateLimits}
 								className="px-4 py-2 bg-blue-500 text-white rounded"
-								disabled={isPending === selectedAbility.aid}>
+								disabled={isPending === selectedAbility.id}>
 								Save
 							</button>
 						</div>

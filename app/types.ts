@@ -43,7 +43,7 @@ export interface SkillDeltasWithMultiplier extends SkillDeltas {
 export type AbilityType = "non-action" | "action" | "bonus-action" | "reaction" | "free-action";
 
 export interface Ability {
-	aid: number;
+	id: number;
 	name: string;
 	description: string;
 	skill_delta_id: string;

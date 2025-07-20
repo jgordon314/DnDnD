@@ -88,7 +88,7 @@ export default function ItemForm({ onSubmit, onCancel }: Props) {
 									None
 								</option>
 								{abilities.map((ability) => (
-									<option key={ability.aid} value={ability.aid}>
+									<option key={ability.id} value={ability.id}>
 										{ability.name}
 									</option>
 								))}
