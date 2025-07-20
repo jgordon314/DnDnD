@@ -16,9 +16,9 @@ async function fetchBaseSkillDeltas(characterId: number): Promise<SkillDeltas> {
 	SELECT sd.*
 	FROM SkillDeltas sd, Characters c
 	WHERE c.id = ? AND sd.id = c.base_stat_id
-	`
+	`;
 
-	const [rows] = await conn.query(fetchBaseSkillDeltasSQL, [characterId])
+	const [rows] = await conn.query(fetchBaseSkillDeltasSQL, [characterId]);
 
 	return addSkillDeltas(...(rows as SkillDeltas[]));
 }
@@ -42,27 +42,18 @@ async function calculateCumulativeSkillDeltas(characterId: number): Promise<Skil
 		FROM SkillDeltas sd, Abilities a, Items i, CharacterInventory ci, Characters c
 		WHERE c.id = ? AND i.id = ci.item_id AND ci.character_id = c.id AND a.id = i.ability_id AND sd.id = a.skill_delta_id AND ci.activation_count > 0
 	);
-	`
+	`;
 
-	const [rows] = await conn.query(fetchSkillDeltasSQL, Array(4).fill(characterId))
+	const [rows] = await conn.query(fetchSkillDeltasSQL, Array(4).fill(characterId));
 
 	return addSkillDeltas(...(rows as SkillDeltas[]));
 }
 
-
-export default async function CharacterDetail({
-	params
-}: {
-	params: Promise<{ id: string }>
-}) {
+export default async function CharacterDetail({ params }: { params: Promise<{ id: string }> }) {
 	const session = await auth();
 
 	if (!session) {
-		return (
-			<>
-				Not signed in
-			</>
-		)
+		return <>Not signed in</>;
 	}
 
 	const { id: paramCharacterId } = await params;
@@ -74,27 +65,46 @@ export default async function CharacterDetail({
 	const cumSkillDeltas = await calculateCumulativeSkillDeltas(characterId);
 	const baseSkillDeltas = await fetchBaseSkillDeltas(characterId);
 
-	
-
 	return (
-
 		<div className="paulward">
 			<div>
-				<h1><Link href="/character_list">Go back</Link></h1>
+				<h1>
+					<Link href="/character_list">Go back</Link>
+				</h1>
 				<h1>Signed in as: {session.user.name}</h1>
 				<h1>{character.name}</h1>
 				<p>{character.description}</p>
 			</div>
 			<br />
 			<div>
-				<SkillDeltasTable characterId={characterId} cumSkillDeltas={cumSkillDeltas} baseSkillDeltas={baseSkillDeltas} />
+				<SkillDeltasTable
+					characterId={characterId}
+					cumSkillDeltas={cumSkillDeltas}
+					baseSkillDeltas={baseSkillDeltas}
+				/>
 			</div>
 			<br />
 			<div>
+				<div className="flex justify-between items-center mb-2">
+					<h2 className="text-xl font-bold">Inventory</h2>
+					<Link
+						href={`/useables_list/item_list/${characterId}`}
+						className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded text-sm">
+						Add Items
+					</Link>
+				</div>
 				<CharacterInventoryTable characterId={characterId} />
 			</div>
 			<br />
 			<div>
+				<div className="flex justify-between items-center mb-2">
+					<h2 className="text-xl font-bold">Abilities</h2>
+					<Link
+						href={`/useables_list/ability_list/${characterId}`}
+						className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded text-sm">
+						Add Abilities
+					</Link>
+				</div>
 				<CharacterAbilitiesTable characterId={characterId} />
 			</div>
 			<br />
@@ -103,6 +113,14 @@ export default async function CharacterDetail({
 			</div>
 			<br />
 			<div>
+				<div className="flex justify-between items-center mb-2">
+					<h2 className="text-xl font-bold">Spells</h2>
+					<Link
+						href={`/useables_list/spell_list/${characterId}`}
+						className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded text-sm">
+						Add Spells
+					</Link>
+				</div>
 				<CharacterSpellsTable characterId={characterId} />
 			</div>
 			<br />
