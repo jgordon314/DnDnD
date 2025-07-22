@@ -1,6 +1,6 @@
 import { RowDataPacket } from "mysql2";
-import conn from "../db";
-import { ID, User } from "../types";
+import conn from "../../db";
+import { ID, User } from "../../types";
 
 export async function getUserByUsername(username: string) {
     const [rows] = await conn.query<(User & RowDataPacket)[]>(

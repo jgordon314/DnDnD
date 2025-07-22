@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { SidebarTop } from "./components/sidebar-top";
 import { SidebarActions } from "./components/sidebar-actions";
 import { SidebarCharacterList } from "./components/sidebar-character-list";
-import { getCharactersForUser } from "../lib/models/characters";
+import { getCharactersForUser } from "../lib/models/characters/query";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const session = await auth();

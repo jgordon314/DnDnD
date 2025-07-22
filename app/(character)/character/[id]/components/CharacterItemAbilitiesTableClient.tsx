@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { CharacterAbility, Ability } from "@/app/lib/types";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/app/components/ui/table";
+import { Button } from "@/app/components/ui/button";
 
 interface Props {
   rows: (Ability & CharacterAbility)[];
@@ -28,48 +30,37 @@ export function CharacterItemAbilitiesTableClient({ rows: initialRows, character
   }
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Item Ability Name</th>
-          <th>Activation Count</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Item Ability Name</TableHead>
+          <TableHead>Activation Count</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
         {rows.filter(row => row.activation_count >= 0).map(row => (
-          <tr key={row.id}>
-            <td>{row.name}</td>
-            <td>{row.activation_count}</td>
-            <td>
-              <button
-                style={{ marginRight: 8, padding: "4px 12px", borderRadius: 6, background: "#0070f3", color: "#fff", border: "none", cursor: "pointer" }}
-                disabled={isPending === row.id}
-                onClick={() => updateActivation(row.id, 1)}
+          <TableRow key={row.id}>
+            <TableCell>{row.name}</TableCell>
+            <TableCell>
+              <div
+                className="flex w-full max-w-sm items-center gap-2"
               >
-                +
-              </button>
-              <button
-                style={{
-                  padding: "4px 12px",
-                  borderRadius: 6,
-                  background: "#e00",
-                  color: "#fff",
-                  border: "none",
-                  cursor: row.activation_count > 0 ? "pointer" : "default",
-                  opacity: row.activation_count > 0 ? 1 : 0,
-                  pointerEvents: row.activation_count > 0 ? "auto" : "none",
-                  marginRight: 8,
-                }}
-                disabled={isPending === row.id || row.activation_count === 0}
-                onClick={() => updateActivation(row.id, -1)}
-              >
-                -
-              </button>
-            </td>
-          </tr>
+                <Button
+                  variant="ghost"
+                  disabled={isPending === row.id || row.activation_count === 0}
+                  onClick={() => updateActivation(row.id, -1)}
+                >-</Button>
+                <div>{row.activation_count}</div>
+                <Button
+                  variant="ghost"
+                  disabled={isPending === row.id}
+                  onClick={() => updateActivation(row.id, 1)}
+                >+</Button>
+              </div>
+            </TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
   );
 }

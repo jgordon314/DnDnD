@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import conn from "@/app/lib/db";
 import { RowDataPacket } from "mysql2";
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next/types";
-import { getUserByUserId, getUserByUsername } from "@/app/lib/models/users";
+import { getUserByUserId, getUserByUsername } from "@/app/lib/models/users/query";
 
 interface DbUser extends RowDataPacket {
 	id: number;

@@ -1,10 +1,11 @@
 import db from "@/app/lib/db";
-import { Item } from "@/app/types";
+import { Item } from "@/app/lib/types";
 import ListTable from "../../components/UsableList";
 import { addItemToCharacter } from "../../actions";
 
-export default async function ItemList({ params }: { params: { id?: string } }) {
-	const characterId = params.id ? parseInt(params.id) : undefined;
+export default async function ItemList({ params }: { params: Promise<{ id?: string }> }) {
+	const {id} = await params;
+	const characterId = id ? parseInt(id) : undefined;
 
 	// If no character ID is provided, show all items
 	const fetchItemsSQL = characterId
@@ -28,6 +29,7 @@ export default async function ItemList({ params }: { params: { id?: string } }) 
 				{
 					label: "Add to Character",
 					actionUrl: "/useables_list/actions/add-item",
+					serverAction: addItemToCharacter,
 				},
 		  ]
 		: [];

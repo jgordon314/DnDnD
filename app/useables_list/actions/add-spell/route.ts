@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 		}
 		const [userCharacters] = await db.query(
 			"SELECT id FROM Characters WHERE id = ? AND user_id = (SELECT id FROM Users WHERE username = ?)",
-			[characterId, session.user.name]
+			[characterId, session.user.username]
 		);
 
 		if (!Array.isArray(userCharacters) || userCharacters.length === 0) {
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 			characterId,
 			spellId,
 		]);
-		return NextResponse.redirect(new URL(`/character/${characterId}`, request.url));
+		return NextResponse.redirect(new URL(`/character/${characterId}`, request.url), { status: 303 });
 	} catch (error) {
 		console.error("Error adding spell to character:", error);
 		return NextResponse.json({ error: "Failed to add spell to character" }, { status: 500 });
@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
 		}
 		const [userCharacters] = await db.query(
 			"SELECT id FROM Characters WHERE id = ? AND user_id = (SELECT id FROM Users WHERE username = ?)",
-			[characterId, session.user.name]
+			[characterId, session.user.username]
 		);
 
 		if (!Array.isArray(userCharacters) || userCharacters.length === 0) {
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
 			characterId,
 			spellId,
 		]);
-		return NextResponse.redirect(new URL(`/character/${characterId}`, request.url));
+		return NextResponse.redirect(new URL(`/character/${characterId}`, request.url), { status: 303 });
 	} catch (error) {
 		console.error("Error adding spell to character:", error);
 		return NextResponse.json({ error: "Failed to add spell to character" }, { status: 500 });

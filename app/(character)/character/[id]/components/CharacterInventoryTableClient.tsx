@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { CharacterItem, Item } from "@/app/lib/types";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/app/components/ui/table";
+import { Button } from "@/app/components/ui/button";
 
 interface Props {
 	rows: (Item & CharacterItem)[];
@@ -42,76 +44,64 @@ export function CharacterInventoryTableClient({ rows: initialRows, characterId }
 		}
 	}
 
-async function handleUnequip(itemId: number) {
-	setPending(itemId);
-	try {
-		const response = await fetch("/api/unequip", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ characterId, itemId }),
-		});
+	async function handleUnequip(itemId: number) {
+		setPending(itemId);
+		try {
+			const response = await fetch("/api/unequip", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ characterId, itemId }),
+			});
 
-		if (response.ok) {
-			// Force a full page reload to refresh all data
-			window.location.reload();
-		} else {
-			console.error("Failed to unequip item:", await response.text());
+			if (response.ok) {
+				// Force a full page reload to refresh all data
+				window.location.reload();
+			} else {
+				console.error("Failed to unequip item:", await response.text());
+			}
+		} catch (error) {
+			setPending(null);
+			console.error("Error unequipping item:", error);
 		}
-	} catch (error) {
-		console.error("Error unequipping item:", error);
-	} finally {
-		setPending(null);
 	}
-}
 
 	return (
-		<table>
-			<thead>
-				<tr>
-					<th>Item Name</th>
-					<th>Item Count</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				{rows.map((row) => (
-					<tr key={row.id}>
-						<td>{row.name}</td>
-						<td>{row.quantity}</td>
-						<td>
-							{row.activation_count === -1 ? (
-								<button
-									style={{
-										padding: "6px 16px",
-										borderRadius: "6px",
-										background: "#0070f3",
-										color: "#fff",
-										border: "none",
-										cursor: "pointer",
-									}}
-									disabled={isPending === row.id}
-									onClick={() => handleEquip(row.id)}>
-									Equip
-								</button>
-							) : (
-								<button
-									style={{
-										padding: "6px 16px",
-										borderRadius: "6px",
-										background: "#e00",
-										color: "#fff",
-										border: "none",
-										cursor: "pointer",
-									}}
-									disabled={isPending === row.id}
-									onClick={() => handleUnequip(row.id)}>
-									Remove
-								</button>
-							)}
-						</td>
-					</tr>
-				))}
-			</tbody>
-		</table>
+		<>
+			<Table>
+				<TableHeader>
+					<TableRow>
+						<TableHead>Item Name</TableHead>
+						<TableHead>Item Count</TableHead>
+						<TableHead>Action</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					{rows.map((row) => (
+						<TableRow key={row.id}>
+							<TableCell>{row.name}</TableCell>
+							<TableCell>{row.quantity}</TableCell>
+							<TableCell>
+								{row.activation_count === -1 ? (
+									<Button
+										disabled={isPending == row.id}
+										onClick={() => handleEquip(row.id)}
+									>
+										Equip
+									</Button>
+								) : (
+									<Button
+										variant="destructive"
+										disabled={isPending == row.id}
+										onClick={() => handleUnequip(row.id)}
+									>
+										Remove
+									</Button>
+								)}
+							</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
+		</>
 	);
 }

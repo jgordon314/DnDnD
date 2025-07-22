@@ -19,11 +19,12 @@ export async function addAbilityToCharacter(formData: FormData) {
 			abilityId,
 		]);
 		revalidatePath(`/character/${characterId}`);
-		redirect(`/character/${characterId}`);
 	} catch (error) {
 		console.error("Error adding ability to character:", error);
-		return { success: false, error: "Failed to add ability to character" };
+		return;
 	}
+
+	redirect(`/character/${characterId}`);
 }
 
 export async function addItemToCharacter(formData: FormData) {
@@ -41,11 +42,12 @@ export async function addItemToCharacter(formData: FormData) {
 			[characterId, itemId]
 		);
 		revalidatePath(`/character/${characterId}`);
-		redirect(`/character/${characterId}`);
 	} catch (error) {
 		console.error("Error adding item to character:", error);
-		return { success: false, error: "Failed to add item to character" };
+		return;
 	}
+
+	redirect(`/character/${characterId}`);
 }
 
 export async function addSpellToCharacter(formData: FormData) {
@@ -63,9 +65,10 @@ export async function addSpellToCharacter(formData: FormData) {
 			spellId,
 		]);
 		revalidatePath(`/character/${characterId}`);
-		redirect(`/character/${characterId}`);
 	} catch (error) {
 		console.error("Error adding spell to character:", error);
-		return { success: false, error: "Failed to add spell to character" };
+		return;
 	}
+
+	redirect(`/character/${characterId}`);
 }

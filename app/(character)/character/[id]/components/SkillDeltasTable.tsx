@@ -4,6 +4,9 @@ import { skillLabelText } from "@/app/lib/utils";
 import { SkillDeltas } from "@/app/lib/types";
 import { useState } from "react";
 import { updateCharacterBaseSkillDeltas } from "../actions";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/app/components/ui/table";
+import { Button } from "@/app/components/ui/button";
+import { Input } from "@/app/components/ui/input";
 
 export function SkillDeltasTable({
     characterId,
@@ -35,28 +38,34 @@ export function SkillDeltasTable({
     }
 
     return (
-        <table>
-            <thead>
-                <tr>
-                    <th>Skill Name</th>
-                    <th>Cumulative Points</th>
-                    <th>Base Character Points</th>
-                    <th>Update</th>
-                </tr>
-            </thead>
-            <tbody>
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHead>Skill Name</TableHead>
+                    <TableHead>Cumulative Points</TableHead>
+                    <TableHead>Base Character Points</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
                 {(Object.keys(cumSkillDeltas) as Array<keyof SkillDeltas>).map(skillDeltasKey =>
-                    <tr key={skillDeltasKey}>
-                        <td>{skillLabelText(skillDeltasKey)}</td>
-                        <td>{cumSkillDeltasState[skillDeltasKey]}</td>
-                        <td>{baseSkillDeltasState[skillDeltasKey]}</td>
-                        <td>
-                            <button onClick={() => updateBaseSkillDeltas(skillDeltasKey, baseSkillDeltasState[skillDeltasKey] - 1)}><a>-</a></button>
-                            <button onClick={() => updateBaseSkillDeltas(skillDeltasKey, baseSkillDeltasState[skillDeltasKey] + 1)}><a>+</a></button>
-                        </td>
-                    </tr>
+                    <TableRow key={skillDeltasKey}>
+                        <TableCell>{skillLabelText(skillDeltasKey)}</TableCell>
+                        <TableCell>{cumSkillDeltasState[skillDeltasKey]}</TableCell>
+                        <TableCell>
+                            <Input
+                                type="number"
+                                value={baseSkillDeltasState[skillDeltasKey]}
+                                onChange={(e) => {
+                                    const val = Number(e.target.value)
+                                    val && updateBaseSkillDeltas(skillDeltasKey, val)
+                                }}
+                                required
+                                className="max-w-20"
+                            />
+                        </TableCell>
+                    </TableRow>
                 )}
-            </tbody>
-        </table>
+            </TableBody>
+        </Table>
     )
 }

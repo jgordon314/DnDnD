@@ -1,10 +1,11 @@
 import db from "@/app/lib/db";
 import ListTable from "../../components/UsableList";
-import { Spell } from "@/app/types";
+import { Spell } from "@/app/lib/types";
 import { addSpellToCharacter } from "../../actions";
 
-export default async function SpellList({ params }: { params: { id?: string } }) {
-	const characterId = params.id ? parseInt(params.id) : undefined;
+export default async function SpellList({ params }: { params: Promise<{ id?: string }> }) {
+	const {id} = await params;
+	const characterId = id ? parseInt(id) : undefined;
 
 	// If no character ID is provided, show all spells
 	const fetchSpellsSQL = characterId
@@ -30,6 +31,7 @@ export default async function SpellList({ params }: { params: { id?: string } })
 				{
 					label: "Add to Character",
 					actionUrl: "/useables_list/actions/add-spell",
+					serverAction: addSpellToCharacter,
 				},
 		  ]
 		: [];

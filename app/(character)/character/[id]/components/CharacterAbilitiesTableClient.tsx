@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { Ability, CharacterAbility } from "@/app/lib/types";
+import { Table, TableCell, TableHead, TableHeader, TableRow } from "@/app/components/ui/table";
+import { Button } from "@/app/components/ui/button";
 
 interface Props {
 	rows: (Ability & CharacterAbility)[];
@@ -101,8 +103,8 @@ export function CharacterAbilitiesTableClient({ rows: initialRows, characterId }
 							row.available_uses !== null && delta > 0
 								? Math.max(0, row.available_uses - 1)
 								: row.available_uses !== null && delta < 0
-								? row.available_uses + 1
-								: row.available_uses,
+									? row.available_uses + 1
+									: row.available_uses,
 					};
 				}
 				return row;
@@ -113,63 +115,44 @@ export function CharacterAbilitiesTableClient({ rows: initialRows, characterId }
 
 	return (
 		<>
-			<table>
-				<thead>
-					<tr>
-						<th>Ability Name</th>
-						<th>Activation Count</th>
-						<th>Max Uses</th>
-						<th>Available Uses</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
+			<Table>
+				<TableHeader>
+					<TableRow>
+						<TableHead>Ability Name</TableHead>
+						<TableHead>Activation Count</TableHead>
+						<TableHead>Max Uses</TableHead>
+						<TableHead>Available Uses</TableHead>
+						<TableHead>Actions</TableHead>
+					</TableRow>
+				</TableHeader>
 				<tbody>
 					{rows.map((row, index) => (
-						<tr key={row.id || `ability-${row.ability_id}-${index}`}>
-							<td>{row.name}</td>
-							<td>{row.activation_count}</td>
-							<td>{row.max_uses === null ? "Unlimited" : row.max_uses}</td>
-							<td>{row.available_uses === null ? "Unlimited" : row.available_uses}</td>
-							<td className="flex space-x-2">
-								<button
-									style={{
-										marginRight: 8,
-										padding: "4px 12px",
-										borderRadius: 6,
-										background: "#0070f3",
-										color: "#fff",
-										border: "none",
-										cursor:
-											row.available_uses === null || row.available_uses > 0
-												? "pointer"
-												: "default",
-										opacity: row.available_uses === null || row.available_uses > 0 ? 1 : 0,
-										pointerEvents:
-											row.available_uses === null || row.available_uses > 0 ? "auto" : "none",
-									}}
-									disabled={
-										isPending === row.id ||
-										(row.available_uses !== null && row.available_uses === 0)
-									}
-									onClick={() => updateActivation(row.ability_id, 1)}>
-									+
-								</button>
-								<button
-									style={{
-										padding: "4px 12px",
-										borderRadius: 6,
-										background: "#e00",
-										color: "#fff",
-										border: "none",
-										cursor: row.activation_count > 0 ? "pointer" : "default",
-										opacity: row.activation_count > 0 ? 1 : 0,
-										pointerEvents: row.activation_count > 0 ? "auto" : "none",
-										marginRight: 8,
-									}}
-									disabled={isPending === row.id || row.activation_count === 0}
-									onClick={() => updateActivation(row.ability_id, -1)}>
-									-
-								</button>
+						<TableRow key={row.id || `ability-${row.ability_id}-${index}`}>
+							<TableCell>{row.name}</TableCell>
+							<TableCell>
+								<div
+									className="flex w-full max-w-sm items-center gap-2"
+								>
+									<Button
+										variant="ghost"
+										disabled={isPending === row.id || row.activation_count === 0}
+										onClick={() => updateActivation(row.id, -1)}
+									>-</Button>
+									<div>{row.activation_count}</div>
+									<Button
+										variant="ghost"
+										disabled={
+											isPending === row.id ||
+											(row.available_uses !== null && row.available_uses === 0)
+										}
+										onClick={() => updateActivation(row.id, 1)}
+									>+</Button>
+								</div>
+							</TableCell>
+							<TableCell>{row.activation_count}</TableCell>
+							<TableCell>{row.max_uses === null ? "Unlimited" : row.max_uses}</TableCell>
+							<TableCell>{row.available_uses === null ? "Unlimited" : row.available_uses}</TableCell>
+							<TableCell className="flex space-x-2">
 								<button
 									style={{
 										padding: "6px 16px",
@@ -196,11 +179,11 @@ export function CharacterAbilitiesTableClient({ rows: initialRows, characterId }
 									onClick={() => openLimitModal(row)}>
 									Set Limits
 								</button>
-							</td>
-						</tr>
+							</TableCell>
+						</TableRow>
 					))}
 				</tbody>
-			</table>
+			</Table>
 
 			{showLimitModal && selectedAbility && (
 				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

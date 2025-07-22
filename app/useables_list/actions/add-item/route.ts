@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 		}
 		const [userCharacters] = await db.query(
 			"SELECT id FROM Characters WHERE id = ? AND user_id = (SELECT id FROM Users WHERE username = ?)",
-			[characterId, session.user.name]
+			[characterId, session.user.username]
 		);
 
 		if (!Array.isArray(userCharacters) || userCharacters.length === 0) {
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 			"INSERT INTO CharacterInventory (character_id, item_id, quantity, activation_count) VALUES (?, ?, 1, 0)",
 			[characterId, itemId]
 		);
-		return NextResponse.redirect(new URL(`/character/${characterId}`, request.url));
+		return NextResponse.redirect(new URL(`/character/${characterId}`, request.url), { status: 303 });
 	} catch (error) {
 		console.error("Error adding item to character:", error);
 		return NextResponse.json({ error: "Failed to add item to character" }, { status: 500 });
@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
 		}
 		const [userCharacters] = await db.query(
 			"SELECT id FROM Characters WHERE id = ? AND user_id = (SELECT id FROM Users WHERE username = ?)",
-			[characterId, session.user.name]
+			[characterId, session.user.username]
 		);
 
 		if (!Array.isArray(userCharacters) || userCharacters.length === 0) {
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
 			"INSERT INTO CharacterInventory (character_id, item_id, quantity, activation_count) VALUES (?, ?, 1, 0)",
 			[characterId, itemId]
 		);
-		return NextResponse.redirect(new URL(`/character/${characterId}`, request.url));
+		return NextResponse.redirect(new URL(`/character/${characterId}`, request.url), { status: 303 });
 	} catch (error) {
 		console.error("Error adding item to character:", error);
 		return NextResponse.json({ error: "Failed to add item to character" }, { status: 500 });

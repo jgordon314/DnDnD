@@ -2,7 +2,7 @@
 
 import { ID, type Character } from "../../../lib/types";
 import { useState } from "react";
-import { deleteCharacterByCharacterId, getCharactersForUser } from "../../../lib/models/characters";
+import { deleteCharacterByCharacterId, getCharactersForUser } from "../../../lib/models/characters/query";
 import { Card, CardDescription, CardHeader, CardTitle } from "../../../components/ui/card";
 import { X } from "lucide-react";
 import Link from "next/link";

@@ -1,11 +1,9 @@
 import db from "@/app/lib/db";
-import { CharacterAbility, Ability } from "@/app/lib/types";
-import ListTable from "../../components/UsableList";
-import { addAbilityToCharacter } from "../../actions";
+import { CharacterAbility, Ability, ID } from "@/app/lib/types";
+import ListTable from "@/app/useables_list/components/UsableList";
+import { addAbilityToCharacter } from "@/app/useables_list/actions";
 
-export default async function AbilityList({ params }: { params: Promise<{ id?: string }> }) {
-	const {id} = await params;
-	const characterId = id ? parseInt(id) : undefined;
+export async function CandidateAbilityList({ characterId }: { characterId: ID }) {
 	const fetchAbilitiesSQL = characterId
 		? `
 			SELECT a.* FROM Abilities a 
@@ -38,11 +36,7 @@ export default async function AbilityList({ params }: { params: Promise<{ id?: s
 		: [];
 
 	return (
-		<div className="p-4">
-			<h1 className="text-2xl font-bold mb-4">Available Abilities</h1>
-			{characterId && (
-				<p className="mb-4">Click the "Add to Character" button to add an ability to your character.</p>
-			)}
+		<div className="pr-2">
 			<ListTable columns={columns} data={mappedRows} actions={actions} characterId={characterId} />
 		</div>
 	);

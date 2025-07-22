@@ -1,6 +1,6 @@
 import { auth } from "../../lib/auth";
 import { redirect } from "next/navigation";
-import { getCharactersForUser } from "../../lib/models/characters";
+import { getCharactersForUser } from "../../lib/models/characters/query";
 import { CharacterList } from "./components/CharacterList";
 import Link from "next/link";
 import { Button } from "@/app/components/ui/button";

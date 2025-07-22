@@ -1,6 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import CreateModal from "../../components/CreateModal";
+import Form from 'next/form';
+import { Button } from "@/app/components/ui/button";
+import { ID } from "@/app/lib/types";
 
 interface Column<T> {
 	header: string;
@@ -10,18 +13,19 @@ interface Column<T> {
 export interface ActionConfig {
 	label: string;
 	actionUrl: string;
+	serverAction?: (formData: FormData) => void | Promise<void>;
 }
 
-interface ListProps<T extends { id: number }> {
+interface ListProps<T extends { id: ID }> {
 	columns: Column<T>[];
 	data: T[];
 	actions?: ActionConfig[];
-	characterId?: number;
+	characterId?: ID;
 	type?: "ability" | "spell" | "item";
 	showCreateButton?: boolean;
 }
 
-export default function ListTable<T extends { id: number }>({
+export default function ListTable<T extends { id: ID }>({
 	columns,
 	data,
 	actions = [],
@@ -32,7 +36,7 @@ export default function ListTable<T extends { id: number }>({
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	return (
-		<div>
+		<div className="">
 			{showCreateButton && type && (
 				<div className="flex justify-end mb-4">
 					<button
@@ -69,15 +73,32 @@ export default function ListTable<T extends { id: number }>({
 							{actions.length > 0 && (
 								<td className="border-b border-gray-200 p-2 whitespace-pre-wrap">
 									{actions.map((action) => (
-										<form action={action.actionUrl} method="POST" key={action.label}>
-											<input type="hidden" name="id" value={record.id} />
-											<input type="hidden" name="characterId" value={characterId || ""} />
-											<button
-												type="submit"
-												className="bg-green-500 text-white font-bold py-1 px-4 rounded hover:bg-green-600">
-												+ {action.label}
-											</button>
-										</form>
+										<div key={action.label}>
+											{
+												(action.serverAction) ? (
+													<Form action={action.serverAction}>
+														<input type="hidden" name="id" value={record.id} />
+														<input type="hidden" name="characterId" value={characterId || ""} />
+														<Button
+															type="submit"
+															className="bg-green-500 text-white font-bold py-1 px-4 rounded hover:bg-green-600">
+															+ {action.label}
+														</Button>
+													</Form>
+
+												) : (
+													<form action={action.actionUrl} method="POST">
+														<input type="hidden" name="id" value={record.id} />
+														<input type="hidden" name="characterId" value={characterId || ""} />
+														<button
+															type="submit"
+															className="bg-green-500 text-white font-bold py-1 px-4 rounded hover:bg-green-600">
+															+ {action.label}
+														</button>
+													</form>
+												)
+											}
+										</div>
 									))}
 								</td>
 							)}

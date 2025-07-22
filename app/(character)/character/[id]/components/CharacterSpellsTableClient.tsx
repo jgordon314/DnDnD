@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { Spell, CharacterSpell } from "@/app/lib/types";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/app/components/ui/table";
+import { Button } from "@/app/components/ui/button";
 
 interface Props {
 	rows: (Spell & CharacterSpell)[];
@@ -71,28 +73,28 @@ export function CharacterSpellsTableClient({ rows: initialRows, characterId }: P
 	}
 
 	return (
-		<table>
-			<thead>
-				<tr>
-					<th>Spell Name</th>
-					<th>Level</th>
-					<th>Casting Time</th>
-					<th>Duration</th>
-					<th>Activation Count</th>
-					<th>Actions</th>
-				</tr>
-			</thead>
-			<tbody>
+		<Table>
+			<TableHeader>
+				<TableRow>
+					<TableHead>Spell Name</TableHead>
+					<TableHead>Level</TableHead>
+					<TableHead>Casting Time</TableHead>
+					<TableHead>Duration</TableHead>
+					<TableHead>Activation Count</TableHead>
+					<TableHead>Actions</TableHead>
+				</TableRow>
+			</TableHeader>
+			<TableBody>
 				{rows.map((row) => (
-					<tr key={row.id}>
-						<td>{row.name}</td>
-						<td>{row.level}</td>
-						<td>{row.casting_time}</td>
-						<td>{row.duration}</td>
-						<td>{row.activations}</td>
-						<td>
+					<TableRow key={row.id}>
+						<TableCell>{row.name}</TableCell>
+						<TableCell>{row.level}</TableCell>
+						<TableCell>{row.casting_time}</TableCell>
+						<TableCell>{row.duration}</TableCell>
+						<TableCell>{row.activations}</TableCell>
+						<TableCell>
 							<div style={{ display: "flex", gap: "8px" }}>
-								<button
+								<Button
 									style={{
 										padding: "6px 16px",
 										borderRadius: "6px",
@@ -104,8 +106,8 @@ export function CharacterSpellsTableClient({ rows: initialRows, characterId }: P
 									disabled={isPending === row.id && pendingAction === "activate"}
 									onClick={() => handleActivate(row.id)}>
 									Activate
-								</button>
-								<button
+								</Button>
+								<Button
 									style={{
 										padding: "6px 16px",
 										borderRadius: "6px",
@@ -117,12 +119,12 @@ export function CharacterSpellsTableClient({ rows: initialRows, characterId }: P
 									disabled={isPending === row.id && pendingAction === "remove"}
 									onClick={() => handleRemove(row.id)}>
 									Remove
-								</button>
+								</Button>
 							</div>
-						</td>
-					</tr>
+						</TableCell>
+					</TableRow>
 				))}
-			</tbody>
-		</table>
+			</TableBody>
+		</Table>
 	);
 }

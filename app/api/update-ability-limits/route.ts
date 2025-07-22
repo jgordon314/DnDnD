@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 
 		const [userCharacters] = await db.query(
 			"SELECT id FROM Characters WHERE id = ? AND user_id = (SELECT id FROM Users WHERE username = ?)",
-			[characterId, session.user.name]
+			[characterId, session.user.username]
 		);
 
 		if (!Array.isArray(userCharacters) || userCharacters.length === 0) {

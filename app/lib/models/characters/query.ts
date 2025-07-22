@@ -1,8 +1,8 @@
 "use server";
 
 import { ResultSetHeader, RowDataPacket } from "mysql2";
-import conn from "../db";
-import { Character, ID } from "../types";
+import conn from "../../db";
+import { Character, ID } from "../../types";
 
 export async function getCharactersForUser(userId: ID): Promise<Character[]> {
     const [rows] = await conn.query<(Character & RowDataPacket)[]>("SELECT * FROM Characters WHERE user_id = ?", [userId]);
