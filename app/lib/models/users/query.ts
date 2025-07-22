@@ -23,3 +23,10 @@ export async function getUserByUserId(userId: ID) {
 
     return rows[0];
 }
+
+export async function createUserWithUsernamePassword(username: string, password: string) {
+    const [result, fields] = await conn.query<RowDataPacket[]>(
+        "INSERT INTO Users (username, password) VALUES (?, ?)",
+        [username, password]
+    );
+}

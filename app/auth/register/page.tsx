@@ -10,29 +10,42 @@ import {
 } from "@/app/components/ui/card"
 import { Input } from "@/app/components/ui/input"
 import { Label } from "@/app/components/ui/label"
-import { signIn } from "next-auth/react";
-import { Alert, AlertDescription, AlertTitle } from "@/app/components/ui/alert"
-import React, { useState } from "react"
+import { Alert, AlertTitle } from "@/app/components/ui/alert"
+import React, { FormEvent, useState } from "react"
 import { redirect, useSearchParams } from "next/navigation"
 import { isSameOrigin } from "@/app/lib/security";
+import { signUp } from "./action";
+import { signIn } from "next-auth/react";
 
-export default function Login() {
-  const searchParams = useSearchParams()
-
-  const [incorrectAttempt, setIncorrectAttempt] = useState(false);
+export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorText, setErrorText] = useState("");
+  const searchParams = useSearchParams();
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
-    const formData = new FormData(e.target as HTMLFormElement);
-
     setIsLoading(true);
+    setIsError(false);
+
+    const formData = new FormData(e.currentTarget);
+
+    const username = String(formData.get("username")) || "";
+    const password = String(formData.get("password")) || "";
+
+    const signUpResult = await signUp(username, password);
+
+    if (signUpResult) {
+      setErrorText(signUpResult)
+      setIsError(true)
+      setIsLoading(false)
+      return;
+    }
 
     const result = await signIn("credentials", {
       redirect: false,
-      username: formData.get("username"),
-      password: formData.get("password"),
+      username,
+      password,
     });
 
     if (result?.ok) {
@@ -44,9 +57,6 @@ export default function Login() {
         redirect("/characters");
       }
 
-    } else {
-      setIncorrectAttempt(true);
-      setIsLoading(false);
     }
   }
 
@@ -56,14 +66,14 @@ export default function Login() {
         <div className="flex flex-col gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Login to your account</CardTitle>
+              <CardTitle>Register a new account</CardTitle>
             </CardHeader>
 
             <CardContent>
 
-              {incorrectAttempt &&
+              {isError &&
                 <Alert className="mb-4" variant="destructive">
-                  <AlertTitle>Incorrect username or password</AlertTitle>
+                  <AlertTitle>{errorText}</AlertTitle>
                 </Alert>
               }
 
@@ -96,9 +106,9 @@ export default function Login() {
                   </div>
                 </div>
                 <div className="mt-4 text-center text-sm">
-                  Don&apos;t have an account?{" "}
-                  <a href={`/auth/register?next=${searchParams.get("next") || ""}`} className="underline underline-offset-4">
-                    Register
+                  Have an account?{" "}
+                  <a href={`/auth/login?next=${searchParams.get("next") || ""}`} className="underline underline-offset-4">
+                    Login
                   </a>
                 </div>
               </form>
