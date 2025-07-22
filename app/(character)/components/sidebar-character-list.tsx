@@ -1,3 +1,5 @@
+"use client";
+
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -5,17 +7,16 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/app/components/ui/sidebar"
-import { getCharactersForUser } from "@/app/lib/models/characters"
+import { Character } from "@/app/lib/types";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-export async function SidebarCharacterList({ userId }: { userId: number }) {
-  const characters = await getCharactersForUser(userId);
-
+export function SidebarCharacterList({ characters }: { characters: Character[] }) {
+  const pathname = usePathname()
+  
   if (!characters) {
     return null;
   }
-
-  console.log(characters)
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -23,7 +24,7 @@ export async function SidebarCharacterList({ userId }: { userId: number }) {
       <SidebarMenu>
         <SidebarMenuItem>
           {characters.map((character) => 
-            <SidebarMenuButton asChild key={character.id}>
+            <SidebarMenuButton asChild key={character.id} isActive={pathname === `/character/${character.id}`} className="my-1">
               <Link href={`/character/${character.id}`}>{character.name}</Link>
             </SidebarMenuButton>
           )}

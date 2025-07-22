@@ -21,16 +21,21 @@ export function SidebarActions() {
         <SidebarMenu>
           <SidebarMenuItem className="">
             <SidebarMenuButton
-              tooltip="Quick Create"
+              tooltip="New Character"
               className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
+              isActive={pathname === "/characters/new"}
+              asChild
             >
-              <CirclePlus /> New Character
+              <Link href="/characters/new">
+                <CirclePlus />
+                <span>New Character</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton isActive={pathname === "/characters/new"}>
+            <SidebarMenuButton isActive={pathname === "/characters"} asChild>
               <Link href="/characters">All Characters</Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

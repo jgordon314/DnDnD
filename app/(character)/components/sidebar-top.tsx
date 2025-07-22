@@ -11,7 +11,7 @@ export function SidebarTop() {
             className="data-[slot=sidebar-menu-button]:!p-1.5"
           >
             <Link href="/">
-              <span className="text-base font-semibold">DDD</span>
+              <span className="text-base font-semibold">DnDnD</span>
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
