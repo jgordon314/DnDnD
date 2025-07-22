@@ -8,9 +8,10 @@ interface Props {
 	health?: number;
 	onSkillDeltasChange: (newSkillDeltas: SkillDeltas) => void;
 	onHealthChange?: (health: number) => void;
+	title?: string;
 }
 
-export default function SkillDeltasForm({ skillDeltas, health, onSkillDeltasChange, onHealthChange }: Props) {
+export default function SkillDeltasForm({ title, skillDeltas, health, onSkillDeltasChange, onHealthChange }: Props) {
 	function handleSkillDeltaChange(e: React.ChangeEvent<HTMLInputElement>) {
 		const { name, value } = e.target;
 		if (name === "health" && onHealthChange) {
@@ -38,7 +39,7 @@ export default function SkillDeltasForm({ skillDeltas, health, onSkillDeltasChan
 				width: "100%",
 				maxWidth: 900,
 			}}>
-			<legend className="text-center font-medium text-sm mb-0 px-2">Stats</legend>
+			<legend className="text-center font-medium text-sm mb-0 px-2">{ title || "Stats" }</legend>
 
 			{/* Core Attributes */}
 			<div

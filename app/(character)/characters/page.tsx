@@ -121,7 +121,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col gap-7">
-      <h1 className="text-3xl">Your Characters</h1>
+      <h1 className="text-3xl">My Characters</h1>
       <CharacterList characters={characters} />
       <Link href="/characters/new">
         <Button>Add New Character</Button>

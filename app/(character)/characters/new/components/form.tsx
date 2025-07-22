@@ -31,6 +31,7 @@ export function NewCharacterForm() {
   async function createCharacter(e: FormEvent) {
     e.preventDefault();
     setIsLoading(true);
+    setIsError(false);
     console.log("Submitting name:", name, skillDeltas);
     if (!name.trim()) {
       console.warn("Name cannot be empty");
