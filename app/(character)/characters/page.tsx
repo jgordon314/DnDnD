@@ -2,6 +2,8 @@ import { auth } from "../../lib/auth";
 import { redirect } from "next/navigation";
 import { getCharactersForUser } from "../../lib/models/characters";
 import { CharacterList } from "./components/CharacterList";
+import Link from "next/link";
+import { Button } from "@/app/components/ui/button";
 
 
 export default async function Home() {
@@ -118,9 +120,12 @@ export default async function Home() {
   // )
 
   return (
-    <div className="m-12">
-      <h1 className="text-3xl mb-10">Your Characters</h1>
+    <div className="flex flex-col gap-7">
+      <h1 className="text-3xl">Your Characters</h1>
       <CharacterList characters={characters} />
+      <Link href="/characters/new">
+        <Button>Add New Character</Button>
+      </Link>
     </div>
   )
 

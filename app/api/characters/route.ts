@@ -1,9 +1,10 @@
 import conn from "@/app/lib/db";
+import { ResultSetHeader } from "mysql2";
 import { NextResponse } from "next/server";
 export async function POST(request: Request) {
 	try {
 		const body = await request.json();
-		const { name, player_id, ...skillDeltas } = body;
+		const { name, description, player_id, ...skillDeltas } = body;
 		if (!name || !player_id) {
 			return NextResponse.json(
 				{ error: "Missing name or player_id" },
@@ -11,7 +12,6 @@ export async function POST(request: Request) {
 			);
 		}
 		const user_id = player_id; // use player_id from frontend/session
-		const description = "Empty.";
 
 		// Insert a new SkillDeltas row with all provided values
 		const columns = Object.keys(skillDeltas);
@@ -23,11 +23,11 @@ export async function POST(request: Request) {
 		const [result]: any = await conn.query(sql, values);
 		const base_stat_id = result.insertId;
 
-		await conn.query(
+		const addCharacter = await conn.query<ResultSetHeader>(
 			"INSERT INTO Characters (name, description, user_id, base_stat_id) VALUES (?, ?, ?, ?)",
 			[name, description, user_id, base_stat_id]
 		);
-		return NextResponse.json({ success: true });
+		return NextResponse.json({ success: true, characterId: addCharacter[0].insertId });
 	} catch (error) {
 		console.error("POST /api/characters error:", error);
 		return NextResponse.error();

@@ -1,4 +1,5 @@
-import { SkillDeltas, SkillDeltasWithMultiplier } from "../types";
+import { SkillDeltasWithMultiplier, SkillDeltas } from "../../types";
+
 
 export function addSkillDeltas(...skillDeltaArgs: Partial<SkillDeltasWithMultiplier>[]) {
     let result: SkillDeltas = {
@@ -29,17 +30,17 @@ export function addSkillDeltas(...skillDeltaArgs: Partial<SkillDeltasWithMultipl
         intimidation: 0,
         performance: 0,
         persuasion: 0,
-    }
+    };
 
     for (const skillDeltas of skillDeltaArgs) {
-		for (const skillName of Object.keys(result) as Array<keyof SkillDeltas>) {
-            result[skillName] += (skillDeltas[skillName] ?? 0) * (skillDeltas.multiplier ?? 1)
-		}
-	}
+        for (const skillName of Object.keys(result) as Array<keyof SkillDeltas>) {
+            result[skillName] += (skillDeltas[skillName] ?? 0) * (skillDeltas.multiplier ?? 1);
+        }
+    }
 
     return result;
 }
 
 export function zeroSkillDeltas(): SkillDeltas {
-    return addSkillDeltas()
+    return addSkillDeltas();
 }

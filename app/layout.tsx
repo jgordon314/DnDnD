@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "DDD",
+	title: "DnDnD",
 	description: "Dungeons and Dragons and Databases",
 };
 

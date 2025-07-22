@@ -9,6 +9,8 @@ function findSegmentNamesAndLinks(segments: string[], characterNameById: Record<
   return segments.map((segment, index, array) => {
     if (segment.startsWith("character")) {
       return ["Characters", "/characters"]
+    } else if (index === 1 && array[1] === "new") {
+      return ["New Character", "/characters/new"]
     } else if (index === 1 && array[0] === "character") {
       return [characterNameById[Number(segment)] || "Indeterminate", `/character/${segment}`]
     }

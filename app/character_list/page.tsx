@@ -5,7 +5,7 @@ import { FormEvent, useEffect, useState } from "react";
 import Modal from "../modal";
 import { type Character, type SkillDeltas } from "../lib/types";
 import Link from "next/link";
-import { zeroSkillDeltas } from "../lib/models/skillDeltas";
+import { zeroSkillDeltas } from "../lib/models/skillDeltas/utils";
 import SkillDeltasForm from "../components/SkillDeltasForm";
 import SpellForm from "../components/SpellForm";
 import ItemForm from "../components/ItemForm";

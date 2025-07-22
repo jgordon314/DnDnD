@@ -37,7 +37,9 @@ export default async function Layout({ children }: { children: React.ReactNode }
           />
           <Path characters={characters} />
         </header>
-        {children}
+        <div className="m-12">
+          {children}
+        </div>
       </SidebarInset>
     </SidebarProvider>
   )

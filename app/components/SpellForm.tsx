@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { SkillDeltas } from "../types";
-import { zeroSkillDeltas } from "../lib/utils";
+import { SkillDeltas } from "../lib/types";
+import { zeroSkillDeltas } from "../lib/models/skillDeltas/utils";
 import SkillDeltasForm from "./SkillDeltasForm";
 
 interface Props {
