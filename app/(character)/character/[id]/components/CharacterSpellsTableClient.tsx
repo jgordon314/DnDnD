@@ -35,6 +35,7 @@ export function CharacterSpellsTableClient({ rows: initialRows, characterId }: P
 			setPending(null);
 			setPendingAction(null);
 		}
+		window.location.reload();
 	}
 
 	async function handleActivate(spellId: number) {
@@ -70,6 +71,7 @@ export function CharacterSpellsTableClient({ rows: initialRows, characterId }: P
 			setPending(null);
 			setPendingAction(null);
 		}
+		window.location.reload();
 	}
 
 	return (

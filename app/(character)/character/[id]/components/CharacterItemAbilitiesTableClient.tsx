@@ -27,6 +27,8 @@ export function CharacterItemAbilitiesTableClient({ rows: initialRows, character
       return row;
     }));
     setPending(null);
+
+    window.location.reload();
   }
 
   return (

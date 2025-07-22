@@ -111,6 +111,7 @@ export function CharacterAbilitiesTableClient({ rows: initialRows, characterId }
 			})
 		);
 		setPending(null);
+		window.location.reload();
 	}
 
 	return (
