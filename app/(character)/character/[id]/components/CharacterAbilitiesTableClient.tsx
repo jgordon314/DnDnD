@@ -149,7 +149,6 @@ export function CharacterAbilitiesTableClient({ rows: initialRows, characterId }
 									>+</Button>
 								</div>
 							</TableCell>
-							<TableCell>{row.activation_count}</TableCell>
 							<TableCell>{row.max_uses === null ? "Unlimited" : row.max_uses}</TableCell>
 							<TableCell>{row.available_uses === null ? "Unlimited" : row.available_uses}</TableCell>
 							<TableCell className="flex space-x-2">
