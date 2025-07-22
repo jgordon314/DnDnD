@@ -101,7 +101,7 @@ export default function Register() {
                   </div>
                   <div className="flex flex-col gap-3">
                     <Button type="submit" className="w-full" disabled={isLoading}>
-                      Login
+                      Register
                     </Button>
                   </div>
                 </div>
