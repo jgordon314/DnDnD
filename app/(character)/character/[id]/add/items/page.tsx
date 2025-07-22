@@ -1,7 +1,7 @@
 import db from "@/app/lib/db";
 import { Item } from "@/app/lib/types";
-import ListTable from "../../components/UsableList";
-import { addItemToCharacter } from "../../actions";
+import ListTable from "@/app/components/UsableList"
+import { addItemToCharacter } from "./actions";
 
 export default async function ItemList({ params }: { params: Promise<{ id?: string }> }) {
 	const {id} = await params;
@@ -35,14 +35,17 @@ export default async function ItemList({ params }: { params: Promise<{ id?: stri
 		: [];
 
 	return (
-		<div className="p-4">
-			<h1 className="text-2xl font-bold mb-4">Available Items</h1>
-			{characterId && (
-				<p className="mb-4">
-					Click the "Add to Character" button to add an item to your character's inventory.
-				</p>
-			)}
-			<ListTable<Item> columns={columns} data={items} actions={actions} characterId={characterId} />
+		<div className="flex flex-col gap-5">
+			<h1 className="text-3xl">Add Items</h1>
+			<div className="p-4">
+				<h1 className="text-2xl font-bold mb-4">Available Items</h1>
+				{characterId && (
+					<p className="mb-4">
+						Click the "Add to Character" button to add an item to your character's inventory.
+					</p>
+				)}
+				<ListTable<Item> columns={columns} data={items} actions={actions} characterId={characterId} />
+			</div>
 		</div>
 	);
 }

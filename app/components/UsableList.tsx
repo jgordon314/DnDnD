@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import CreateModal from "../../components/CreateModal";
+import CreateModal from "./CreateModal";
 import Form from 'next/form';
 import { Button } from "@/app/components/ui/button";
 import { ID } from "@/app/lib/types";

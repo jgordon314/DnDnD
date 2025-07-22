@@ -57,7 +57,7 @@ export default async function CharacterDetail({ params }: { params: Promise<{ id
 					<div className="flex justify-between items-center mb-2">
 						<h2 className="text-xl font-bold">Inventory</h2>
 						<Link
-							href={`/useables_list/item_list/${characterId}`}
+							href={`/character/${characterId}/add/items`}
 							className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded text-sm">
 							Add Items
 						</Link>
@@ -85,7 +85,7 @@ export default async function CharacterDetail({ params }: { params: Promise<{ id
 							</DialogContent>
 						</Dialog> */}
 						<Link
-							href={`/useables_list/ability_list/${characterId}`}
+							href={`/character/${characterId}/add/abilities`}
 							className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded text-sm">
 							Add Abilities
 						</Link>
@@ -99,7 +99,7 @@ export default async function CharacterDetail({ params }: { params: Promise<{ id
 					<div className="flex justify-between items-center mb-2">
 						<h2 className="text-xl font-bold">Spells</h2>
 						<Link
-							href={`/useables_list/spell_list/${characterId}`}
+							href={`/character/${characterId}/add/spells`}
 							className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded text-sm">
 							Add Spells
 						</Link>

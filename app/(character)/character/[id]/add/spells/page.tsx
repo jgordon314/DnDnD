@@ -1,10 +1,10 @@
 import db from "@/app/lib/db";
-import ListTable from "../../components/UsableList";
+import ListTable from "@/app/components/UsableList"
 import { Spell } from "@/app/lib/types";
-import { addSpellToCharacter } from "../../actions";
+import { addSpellToCharacter } from "./actions";
 
 export default async function SpellList({ params }: { params: Promise<{ id?: string }> }) {
-	const {id} = await params;
+	const { id } = await params;
 	const characterId = id ? parseInt(id) : undefined;
 
 	// If no character ID is provided, show all spells
@@ -28,23 +28,26 @@ export default async function SpellList({ params }: { params: Promise<{ id?: str
 
 	const actions = characterId
 		? [
-				{
-					label: "Add to Character",
-					actionUrl: "/useables_list/actions/add-spell",
-					serverAction: addSpellToCharacter,
-				},
-		  ]
+			{
+				label: "Add to Character",
+				actionUrl: "/useables_list/actions/add-spell",
+				serverAction: addSpellToCharacter,
+			},
+		]
 		: [];
 
 	return (
-		<div className="p-4">
-			<h1 className="text-2xl font-bold mb-4">Available Spells</h1>
-			{characterId && (
-				<p className="mb-4">
-					Click the "Add to Character" button to add a spell to your character's spellbook.
-				</p>
-			)}
-			<ListTable columns={columns} data={rows as Spell[]} actions={actions} characterId={characterId} />
+		<div className="flex flex-col gap-5">
+			<h1 className="text-3xl">Add Spells</h1>
+			<div className="p-4">
+				<h1 className="text-2xl font-bold mb-4">Available Spells</h1>
+				{characterId && (
+					<p className="mb-4">
+						Click the "Add to Character" button to add a spell to your character's spellbook.
+					</p>
+				)}
+				<ListTable columns={columns} data={rows as Spell[]} actions={actions} characterId={characterId} />
+			</div>
 		</div>
 	);
 }

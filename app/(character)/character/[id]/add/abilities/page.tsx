@@ -1,9 +1,11 @@
 import db from "@/app/lib/db";
-import { CharacterAbility, Ability, ID } from "@/app/lib/types";
-import ListTable from "@/app/useables_list/components/UsableList";
-import { addAbilityToCharacter } from "@/app/useables_list/actions";
+import { CharacterAbility, Ability } from "@/app/lib/types";
+import ListTable from "@/app/components/UsableList"
+import { addAbilityToCharacter } from "./actions";
 
-export async function CandidateAbilityList({ characterId }: { characterId: ID }) {
+export default async function AbilityList({ params }: { params: Promise<{ id?: string }> }) {
+	const {id} = await params;
+	const characterId = id ? parseInt(id) : undefined;
 	const fetchAbilitiesSQL = characterId
 		? `
 			SELECT a.* FROM Abilities a 
@@ -36,8 +38,15 @@ export async function CandidateAbilityList({ characterId }: { characterId: ID })
 		: [];
 
 	return (
-		<div className="pr-2">
-			<ListTable columns={columns} data={mappedRows} actions={actions} characterId={characterId} />
+		<div className="flex flex-col gap-5">
+			<h1 className="text-3xl">Add Abilities</h1>
+			<div className="p-4">
+				<h1 className="text-2xl font-bold mb-4">Available Abilities</h1>
+				{characterId && (
+					<p className="mb-4">Click the "Add to Character" button to add an ability to your character.</p>
+				)}
+				<ListTable columns={columns} data={mappedRows} actions={actions} characterId={characterId} />
+			</div>
 		</div>
 	);
 }
