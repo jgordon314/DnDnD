@@ -34,6 +34,7 @@ export function CharacterInventoryTableClient({ rows: initialRows, characterId }
 						return row;
 					})
 				);
+				window.location.reload();
 			} else {
 				console.error("Failed to equip item:", await response.text());
 			}
@@ -94,7 +95,7 @@ export function CharacterInventoryTableClient({ rows: initialRows, characterId }
 										disabled={isPending == row.id}
 										onClick={() => handleUnequip(row.id)}
 									>
-										Remove
+										Unequip
 									</Button>
 								)}
 							</TableCell>
