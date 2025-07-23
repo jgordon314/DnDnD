@@ -1,16 +1,17 @@
 "use client";
 import React from "react";
-import { SkillDeltas } from "../types";
-import { zeroSkillDeltas } from "../lib/utils";
+import { SkillDeltas } from "../lib/types";
+import { Input } from "./ui/input";
 
 interface Props {
 	skillDeltas: SkillDeltas;
 	health?: number;
 	onSkillDeltasChange: (newSkillDeltas: SkillDeltas) => void;
 	onHealthChange?: (health: number) => void;
+	title?: string;
 }
 
-export default function SkillDeltasForm({ skillDeltas, health, onSkillDeltasChange, onHealthChange }: Props) {
+export default function SkillDeltasForm({ title, skillDeltas, health, onSkillDeltasChange, onHealthChange }: Props) {
 	function handleSkillDeltaChange(e: React.ChangeEvent<HTMLInputElement>) {
 		const { name, value } = e.target;
 		if (name === "health" && onHealthChange) {
@@ -37,12 +38,13 @@ export default function SkillDeltasForm({ skillDeltas, health, onSkillDeltasChan
 				padding: 8,
 				width: "100%",
 				maxWidth: 900,
-				margin: "0 auto",
 			}}>
-			<legend style={{ textAlign: "center", fontWeight: 500, fontSize: 18, marginBottom: 0 }}>Stats</legend>
+			<legend className="text-center font-medium text-sm mb-0 px-2">{ title || "Stats" }</legend>
 
 			{/* Core Attributes */}
-			<div style={{ display: "flex", gap: 8, marginBottom: 0, marginTop: 0, justifyContent: "center" }}>
+			<div
+                className="flex gap-1 mt-0 mb-3 justify-center"
+			>
 				{[
 					...(health !== undefined ? [{ key: "health", label: "Health", value: health }] : []),
 					{ key: "armor_class", label: "Armor Class", value: skillDeltas.armor_class },
@@ -56,7 +58,7 @@ export default function SkillDeltasForm({ skillDeltas, health, onSkillDeltasChan
 						key={key}
 						style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: 90 }}>
 						<span style={{ fontSize: 12 }}>{label}</span>
-						<input
+						<Input
 							type="number"
 							name={key}
 							value={key === "health" ? health : value}
@@ -77,6 +79,7 @@ export default function SkillDeltasForm({ skillDeltas, health, onSkillDeltasChan
 					justifyItems: "center",
 					width: "100%",
 					marginTop: 0,
+					marginBottom: 10,
 				}}>
 				{Object.entries(skillDeltas)
 					.filter(
@@ -108,7 +111,7 @@ export default function SkillDeltasForm({ skillDeltas, health, onSkillDeltasChan
 									margin: 0,
 								}}>
 								<span style={{ fontSize: 12 }}>{labelText}</span>
-								<input
+								<Input
 									type="number"
 									name={key}
 									value={value}

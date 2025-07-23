@@ -3,9 +3,6 @@ body {
 	place-items: center;
 	height: 100vh;
 }
-body {
-	font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
-}
 
 caption {
 	white-space: nowrap;

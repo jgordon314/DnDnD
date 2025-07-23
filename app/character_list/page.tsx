@@ -2,10 +2,10 @@
 import "./../temp.css";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { FormEvent, useEffect, useState } from "react";
-import Modal from "./../modal";
-import { type Character, type SkillDeltas } from "../types";
+import Modal from "../modal";
+import { type Character, type SkillDeltas } from "../lib/types";
 import Link from "next/link";
-import { zeroSkillDeltas } from "../lib/utils";
+import { zeroSkillDeltas } from "../lib/models/skillDeltas/utils";
 import SkillDeltasForm from "../components/SkillDeltasForm";
 import SpellForm from "../components/SpellForm";
 import ItemForm from "../components/ItemForm";
@@ -140,7 +140,7 @@ export default function Home() {
 						alignItems: "center",
 						marginBottom: "20px",
 					}}>
-					<h1>Signed in as: {session.user?.name}</h1>
+					<h1>Signed in as: {session.user?.username}</h1>
 					<button
 						onClick={() => signOut()}
 						style={{

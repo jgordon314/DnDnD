@@ -16,7 +16,8 @@ export async function POST(request: Request) {
     }
     const updateSQL = `
       UPDATE CharacterAbilities
-      SET activation_count = GREATEST(activation_count + ?, 0)
+      SET activation_count = GREATEST(activation_count + ?, 0),
+          available_uses =  max_uses - activation_count
       WHERE character_id = ? AND ability_id = ?
     `;
     const [result] = await conn.query(updateSQL, [delta, characterId, abilityId]);

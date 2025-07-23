@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import conn from "@/app/lib/db";
 import { RowDataPacket } from "mysql2";
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next/types";
+import { getUserByUserId, getUserByUsername } from "@/app/lib/models/users/query";
 
 interface DbUser extends RowDataPacket {
 	id: number;
@@ -19,38 +20,28 @@ const authConfig = {
 				password: { label: "Password", type: "password" },
 			},
 			async authorize(credentials) {
-				try {
-					if (!credentials?.username || !credentials?.password) return null;
+				if (!credentials?.username || !credentials?.password) return null;
 
-					const [rows] = await conn.query<DbUser[]>(
-						"SELECT id, username, password FROM Users WHERE username = ?",
-						[credentials.username]
-					);
+				const user = await getUserByUsername(credentials?.username)
+				if (!user) return null;
 
-					console.log(rows);
+				if (credentials.password !== user.password) return null;
 
-					const user = rows[0];
-					if (!user) return null;
-
-					if (credentials.password !== user.password) return null;
-
-					console.log("logging in", user.username);
-					return {
-						id: String(user.id),
-						name: user.username,
-					};
-				} catch (error) {
-					console.error("Auth error:", error);
-					return null;
-				}
+				return {
+					id: String(user.id),
+					username: user.username,
+				};
 			},
 		}),
 	],
 	callbacks: {
-		async session({ session, token, user }) {
+		async session({ session, token }) {
 			if (session.user && token.sub) {
-				session.user.id = token.sub;
+				const user = await getUserByUserId(token.sub);
+				session.user.id = parseInt(token.sub);
+				session.user.username = user?.username || "";
 			}
+
 			return session;
 		},
 		async jwt({ token, user }) {

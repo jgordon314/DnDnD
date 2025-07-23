@@ -35,7 +35,7 @@ export async function POST(request: Request) {
 			}
 
 			await conn.query(
-				"INSERT INTO Spells (name, level, description, duration, skill_delta_id, casting_time, spellRange, components) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+				"INSERT INTO Spells (name, level, description, duration, skill_delta_id, casting_time, spell_range, components) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
 				[
 					name,
 					level || 0,

@@ -47,8 +47,8 @@ CREATE TABLE Characters (
   base_stat_id int UNSIGNED NOT NULL UNIQUE,
   PRIMARY KEY(id),
   UNIQUE (user_id, name),
-  FOREIGN KEY(user_id) REFERENCES Users(id),
-  FOREIGN KEY(base_stat_id) REFERENCES SkillDeltas(id)
+  FOREIGN KEY(user_id) REFERENCES Users(id) ON DELETE CASCADE,
+  FOREIGN KEY(base_stat_id) REFERENCES SkillDeltas(id) ON DELETE RESTRICT
 );
 
 
@@ -63,7 +63,7 @@ CREATE TABLE Spells (
   spell_range VARCHAR(100) NOT NULL DEFAULT '',
   components TEXT NOT NULL,
   PRIMARY KEY(id),
-  FOREIGN KEY (skill_delta_id) REFERENCES SkillDeltas(id)
+  FOREIGN KEY (skill_delta_id) REFERENCES SkillDeltas(id) ON DELETE SET NULL
 );
 
 CREATE TABLE Abilities (
@@ -73,7 +73,7 @@ CREATE TABLE Abilities (
   skill_delta_id INT UNSIGNED UNIQUE,
   type ENUM('non-action', 'action', 'bonus-action', 'reaction', 'free-action') NOT NULL,
   PRIMARY KEY(id),
-  FOREIGN KEY(skill_delta_id) REFERENCES SkillDeltas(id)
+  FOREIGN KEY(skill_delta_id) REFERENCES SkillDeltas(id) ON DELETE SET NULL
 );
 
 CREATE TABLE Items (
@@ -82,7 +82,7 @@ CREATE TABLE Items (
   description TEXT NOT NULL,
   ability_id INT UNSIGNED,
   PRIMARY KEY (id),
-  FOREIGN KEY (ability_id) REFERENCES Abilities(id)
+  FOREIGN KEY (ability_id) REFERENCES Abilities(id) ON DELETE SET NULL
 );
 
 CREATE TABLE CharacterSpellList (
@@ -90,8 +90,8 @@ CREATE TABLE CharacterSpellList (
   spell_id INT UNSIGNED NOT NULL,
   activations INT DEFAULT 0 NOT NULL,
   PRIMARY KEY(character_id, spell_id),
-  FOREIGN KEY(character_id) REFERENCES Characters(id),
-  FOREIGN KEY(spell_id) REFERENCES Spells(id)
+  FOREIGN KEY(character_id) REFERENCES Characters(id) ON DELETE CASCADE,
+  FOREIGN KEY(spell_id) REFERENCES Spells(id) ON DELETE CASCADE
 );
 
 CREATE TABLE CharacterAbilities (
@@ -101,8 +101,8 @@ CREATE TABLE CharacterAbilities (
   max_uses INT,
   available_uses INT,
   PRIMARY KEY(character_id, ability_id),
-  FOREIGN KEY(character_id) REFERENCES Characters(id),
-  FOREIGN KEY(ability_id) REFERENCES Abilities(id)
+  FOREIGN KEY(character_id) REFERENCES Characters(id) ON DELETE CASCADE,
+  FOREIGN KEY(ability_id) REFERENCES Abilities(id) ON DELETE CASCADE
 );
 
 CREATE TABLE CharacterInventory (
@@ -111,6 +111,6 @@ CREATE TABLE CharacterInventory (
   quantity INT DEFAULT 0 NOT NULL,
   activation_count INT DEFAULT 0 NOT NULL,
   PRIMARY KEY (item_id, character_id),
-  FOREIGN KEY(character_id) REFERENCES Characters(id),
-  FOREIGN KEY (item_id) REFERENCES Items(id)
+  FOREIGN KEY(character_id) REFERENCES Characters(id) ON DELETE CASCADE,
+  FOREIGN KEY (item_id) REFERENCES Items(id) ON DELETE CASCADE
 );
