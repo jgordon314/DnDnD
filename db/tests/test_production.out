@@ -1,41 +1,69 @@
-Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MySQL connection id is 15
-Server version: 9.3.0 MySQL Community Server - GPL
-
-Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-MySQL [changeme]> source prod/tests/test_prod.sql
-Query OK, 1 row affected (0.001 sec)
-
+MySQL [changeme]> source db/tests/test_production.sql
+ERROR at line 1 in file: 'db/tests/test_production.sql': Failed to open file 'prod/load_prod.sql', error: 2
 +----+----------+
 | id | username |
 +----+----------+
 |  1 | mwgrk    |
 +----+----------+
-1 row in set (0.000 sec)
+1 row in set (0.001 sec)
 
-Query OK, 1 row affected (0.001 sec)
+Query OK, 1 row affected (0.008 sec)
 
 +----+----------+
 | id | username |
 +----+----------+
 | 11 | billnye  |
 +----+----------+
-1 row in set (0.000 sec)
+1 row in set (0.001 sec)
 
-Query OK, 0 rows affected (0.019 sec)
-Records: 0  Duplicates: 0  Warnings: 0
+Query OK, 0 rows affected (0.000 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
 
-+----+------------------+---------------------------------------------------------------------------+---------+--------------+
-| id | name             | description                                                               | user_id | base_stat_id |
-+----+------------------+---------------------------------------------------------------------------+---------+--------------+
-|  2 | Elara Moonshadow | A 3rd-level Elf Rogue with a talent for stealth and subterfuge.           |       2 |            2 |
-|  8 | Kara Dawnsinger  | A 3rd-level Half-Elf Cleric devoted to healing and supporting her allies. |       2 |            8 |
-| 21 | Thalindra        | Level 5 Elven Sorcerer, skilled in elemental magic.                       |       2 |           21 |
-+----+------------------+---------------------------------------------------------------------------+---------+--------------+
-3 rows in set (0.000 sec)
+Query OK, 0 rows affected (0.000 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
++----+-------------+----------------+------------+----------+-----------+--------------+--------+----------+--------------+-----------+------------+-----------------+---------+--------+---------+---------------+--------+----------+-----------------+---------+----------+------------+----------+-----------+--------------+-------------+------------+------------+
+| id | armor_class | current_health | max_health | strength | dexterity | intelligence | wisdom | charisma | constitution | athletics | acrobatics | sleight_of_hand | stealth | arcana | history | investigation | nature | religion | animal_handling | insight | medicine | perception | survival | deception | intimidation | performance | persuasion | multiplier |
++----+-------------+----------------+------------+----------+-----------+--------------+--------+----------+--------------+-----------+------------+-----------------+---------+--------+---------+---------------+--------+----------+-----------------+---------+----------+------------+----------+-----------+--------------+-------------+------------+------------+
+|  1 |          18 |             45 |         45 |       14 |        10 |            8 |     12 |       10 |           14 |         5 |          0 |              -1 |       0 |      0 |       2 |             1 |      0 |        0 |               0 |       3 |        0 |          2 |        0 |         1 |            0 |           2 |          0 |          1 |
++----+-------------+----------------+------------+----------+-----------+--------------+--------+----------+--------------+-----------+------------+-----------------+---------+--------+---------+---------------+--------+----------+-----------------+---------+----------+------------+----------+-----------+--------------+-------------+------------+------------+
+1 row in set (0.001 sec)
+
+Query OK, 0 rows affected (0.000 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
++----+------------------+----------------------------------------------------------------------------------------------------------------+----------------+--------------+
+| id | name             | description                                                                                                    | skill_delta_id | type         |
++----+------------------+----------------------------------------------------------------------------------------------------------------+----------------+--------------+
+|  1 | Shield Wall      | You and adjacent allies gain a +2 bonus to armor class until the start of your next turn.                      |           NULL | reaction     |
+|  2 | Frenzied Strike  | Make an additional weapon attack as a bonus action this turn.                                                  |           NULL | bonus-action |
+|  3 | Cloak of Shadows | You become invisible until the start of your next turn, or until you attack or cast a spell.                   |           NULL | action       |
+|  4 | Rallying Cry     | Choose a number of allies equal to your proficiency bonus. They gain temporary hit points equal to your level. |           NULL | action       |
+|  5 | Divine Shield    | Gain a +1 bonus to AC and advantage on saving throws until the start of your next turn.                        |           NULL | action       |
++----+------------------+----------------------------------------------------------------------------------------------------------------+----------------+--------------+
+5 rows in set (0.000 sec)
+
++----+----------------------+----------------------------------------------------------------------------------------------------------------+------------+
+| id | name                 | description                                                                                                    | ability_id |
++----+----------------------+----------------------------------------------------------------------------------------------------------------+------------+
+|  1 | Frostfire Blade      | A sword that flickers with icy blue flames. Deals fire and cold damage.                                        |         19 |
+|  2 | Ring of Shadows      | A dark silver ring that grants the wearer greater stealth capabilities.                                        |         20 |
+|  3 | Cloak of the Phoenix | A vibrant cloak that allows the wearer to burst into flames upon death, dealing fire damage to nearby enemies. |         21 |
+|  4 | Amulet of Wisdom     | A golden amulet adorned with a sapphire, enhancing the wearer's wisdom and knowledge.                          |         22 |
+|  5 | Boots of the Cat     | These soft, light boots grant incredible agility and reaction time.                                            |         23 |
++----+----------------------+----------------------------------------------------------------------------------------------------------------+------------+
+5 rows in set (0.000 sec)
+
++----+----------------------+-------+-----------------------------------------------------------------------------------------------------------------------+----------+----------------+-----------------------+-------------+---------------------+
+| id | name                 | level | description                                                                                                           | duration | skill_delta_id | casting_time          | spell_range | components          |
++----+----------------------+-------+-----------------------------------------------------------------------------------------------------------------------+----------+----------------+-----------------------+-------------+---------------------+
+|  1 | Flame Lash           |     2 | A whip made of flames lashes out at a target, dealing fire damage and igniting them for further burns.                |        3 |           NULL | action                | 30ft        | V, S                |
+|  2 | Spectral Shield      |     1 | A shimmering barrier appears, granting bonus armor class against the next attack.                                     |        1 |             31 | reaction with trigger | self        | V, S                |
+|  3 | Whispers of the Mind |     3 | You invade the mind of a target, forcing them to make a wisdom saving throw or be incapacitated for the duration.     |        4 |           NULL | action                | 60ft        | V, S, M (a feather) |
+|  4 | Mend Wounds          |     0 | Heals a small amount of damage to a target, knitting their wounds with magical energy.                                |        1 |             32 | action                | touch       | V, S                |
+|  5 | Thunderous Step      |     2 | You teleport up to 30ft and leave a thunderous explosion at your original location, dealing damage to nearby enemies. |        0 |           NULL | bonus action          | self        | V                   |
++----+----------------------+-------+-----------------------------------------------------------------------------------------------------------------------+----------+----------------+-----------------------+-------------+---------------------+
+5 rows in set (0.000 sec)
 
 Query OK, 0 rows affected (0.000 sec)
 
@@ -50,17 +78,17 @@ Query OK, 0 rows affected (0.002 sec)
 +----------+-------+-----------------------------------+
 | Firebolt |     0 | A bolt of fire deals 1d10 damage. |
 +----------+-------+-----------------------------------+
-1 row in set (0.000 sec)
+1 row in set (0.001 sec)
 
 Query OK, 0 rows affected (0.000 sec)
 
-Query OK, 1 row affected (0.000 sec)
+Query OK, 1 row affected (0.001 sec)
 
 Query OK, 1 row affected (0.000 sec)
 
 Query OK, 1 row affected (0.000 sec)
 
-Query OK, 0 rows affected (0.001 sec)
+Query OK, 0 rows affected (0.002 sec)
 
 +----------------+----------------------------+--------------+--------------+----------------------------------------------+
 | item_name      | item_description           | ability_name | ability_type | ability_description                          |
@@ -82,16 +110,16 @@ Query OK, 0 rows affected (0.001 sec)
 +------+--------+-------------------------------------+
 | Rage | action | Enter a frenzied rage for 1 minute. |
 +------+--------+-------------------------------------+
-1 row in set (0.000 sec)
+1 row in set (0.001 sec)
 
-Query OK, 0 rows affected (0.002 sec)
+Query OK, 0 rows affected (0.003 sec)
 
 +--------------+------------------+-------------------------+
 | character_id | character_name   | character_base_charisma |
 +--------------+------------------+-------------------------+
 |            4 | Xandril the Wise |                      16 |
 +--------------+------------------+-------------------------+
-1 row in set (0.000 sec)
+1 row in set (0.001 sec)
 
 Query OK, 1 row affected (0.002 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
@@ -101,23 +129,52 @@ Rows matched: 1  Changed: 1  Warnings: 0
 +--------------+------------------+-------------------------+
 |            4 | Xandril the Wise |                      19 |
 +--------------+------------------+-------------------------+
-1 row in set (0.000 sec)
+1 row in set (0.001 sec)
 
 Query OK, 0 rows affected (0.002 sec)
 
-Query OK, 0 rows affected (0.016 sec)
+Query OK, 0 rows affected (0.021 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
++----+------------------+---------------------------------------------------------------------------+---------+--------------+
+| id | name             | description                                                               | user_id | base_stat_id |
++----+------------------+---------------------------------------------------------------------------+---------+--------------+
+|  2 | Elara Moonshadow | A 3rd-level Elf Rogue with a talent for stealth and subterfuge.           |       2 |            2 |
+|  8 | Kara Dawnsinger  | A 3rd-level Half-Elf Cleric devoted to healing and supporting her allies. |       2 |            8 |
+| 21 | Thalindra        | Level 5 Elven Sorcerer, skilled in elemental magic.                       |       2 |           21 |
++----+------------------+---------------------------------------------------------------------------+---------+--------------+
+3 rows in set (0.000 sec)
+
+Query OK, 0 rows affected (0.000 sec)
+
+Query OK, 7 rows affected (0.001 sec)
+Rows matched: 7  Changed: 7  Warnings: 0
+
+Query OK, 3 rows affected (0.001 sec)
+Rows matched: 4  Changed: 3  Warnings: 0
+
+Query OK, 1 row affected (0.001 sec)
+Rows matched: 3  Changed: 1  Warnings: 0
+
+Query OK, 0 rows affected (0.000 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.002 sec)
+
+Query OK, 0 rows affected (0.020 sec)
 Records: 0  Duplicates: 0  Warnings: 0
 
 Query OK, 0 rows affected (0.014 sec)
 Records: 0  Duplicates: 0  Warnings: 0
 
-Query OK, 0 rows affected (0.014 sec)
+Query OK, 0 rows affected (0.015 sec)
 Records: 0  Duplicates: 0  Warnings: 0
 
-Query OK, 0 rows affected (0.013 sec)
+Query OK, 0 rows affected (0.015 sec)
 Records: 0  Duplicates: 0  Warnings: 0
 
-ERROR 1062 (23000) at line 93 in file: 'prod/tests/test_prod.sql': Duplicate entry '2-3' for key 'CharacterSpellList.PRIMARY'
+Query OK, 1 row affected (0.002 sec)
+
 +------------------+----------------------+-------------+
 | charcter_name    | spell_name           | activations |
 +------------------+----------------------+-------------+
@@ -129,7 +186,8 @@ ERROR 1062 (23000) at line 93 in file: 'prod/tests/test_prod.sql': Duplicate ent
 +------------------+----------------------+-------------+
 5 rows in set (0.001 sec)
 
-ERROR 1062 (23000) at line 98 in file: 'prod/tests/test_prod.sql': Duplicate entry '6-3' for key 'CharacterInventory.PRIMARY'
+Query OK, 1 row affected (0.002 sec)
+
 +---------------------+----------------------+---------------+
 | charcter_name       | item_name            | item_quantity |
 +---------------------+----------------------+---------------+
@@ -139,17 +197,17 @@ ERROR 1062 (23000) at line 98 in file: 'prod/tests/test_prod.sql': Duplicate ent
 | Fennian Brightstone | Boots of the Cat     |             1 |
 | Fennian Brightstone | Shield of Resilience |             3 |
 +---------------------+----------------------+---------------+
-5 rows in set (0.000 sec)
+5 rows in set (0.001 sec)
 
-ERROR 1062 (23000) at line 103 in file: 'prod/tests/test_prod.sql': Duplicate entry '4-9' for key 'CharacterAbilities.PRIMARY'
+Query OK, 1 row affected (0.002 sec)
+
 +------------------+----------------------+
 | charcter_name    | ability_name         |
 +------------------+----------------------+
 | Xandril the Wise | Healing Aura         |
+| Xandril the Wise | Counterspell         |
 | Xandril the Wise | Inspirational Speech |
 | Xandril the Wise | Frostbite            |
 | Xandril the Wise | Shadow Step          |
 +------------------+----------------------+
-4 rows in set (0.000 sec)
-
-MySQL [changeme]> 
+5 rows in set (0.001 sec)

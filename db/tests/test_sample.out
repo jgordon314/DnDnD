@@ -1,57 +1,51 @@
-Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MySQL connection id is 42
-Server version: 9.3.0 MySQL Community Server - GPL
+Query OK, 0 rows affected (0.068 sec)
 
-Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+Query OK, 0 rows affected (0.020 sec)
 
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+Query OK, 0 rows affected (0.014 sec)
 
-MySQL [cs348]> source db/tests/test_sample.sql;
-Query OK, 0 rows affected (0.121 sec)
+Query OK, 0 rows affected (0.020 sec)
 
-Query OK, 0 rows affected (0.023 sec)
+Query OK, 0 rows affected (0.012 sec)
+Records: 0  Duplicates: 0  Warnings: 0
 
-Query OK, 0 rows affected (0.021 sec)
+Query OK, 0 rows affected (0.019 sec)
 
-Query OK, 0 rows affected (0.054 sec)
+Query OK, 0 rows affected (0.014 sec)
 
-Query OK, 0 rows affected (0.037 sec)
+Query OK, 0 rows affected (0.013 sec)
 
-Query OK, 0 rows affected (0.026 sec)
+Query OK, 0 rows affected (0.016 sec)
 
-Query OK, 0 rows affected (0.027 sec)
+Query OK, 0 rows affected (0.016 sec)
 
-Query OK, 0 rows affected (0.028 sec)
+Query OK, 0 rows affected (0.014 sec)
 
-Query OK, 0 rows affected (0.030 sec)
-
-Query OK, 0 rows affected (0.026 sec)
-
-Query OK, 6 rows affected (0.004 sec)
+Query OK, 6 rows affected (0.002 sec)
 Records: 6  Duplicates: 0  Warnings: 0
 
-Query OK, 12 rows affected (0.006 sec)
+Query OK, 12 rows affected (0.003 sec)
 Records: 12  Duplicates: 0  Warnings: 0
 
 Query OK, 4 rows affected (0.004 sec)
 Records: 4  Duplicates: 0  Warnings: 0
 
-Query OK, 13 rows affected (0.006 sec)
+Query OK, 13 rows affected (0.004 sec)
 Records: 13  Duplicates: 0  Warnings: 0
 
-Query OK, 9 rows affected (0.005 sec)
+Query OK, 9 rows affected (0.003 sec)
 Records: 9  Duplicates: 0  Warnings: 0
 
-Query OK, 8 rows affected (0.005 sec)
+Query OK, 8 rows affected (0.002 sec)
 Records: 8  Duplicates: 0  Warnings: 0
 
-Query OK, 12 rows affected (0.004 sec)
+Query OK, 12 rows affected (0.003 sec)
 Records: 12  Duplicates: 0  Warnings: 0
 
 Query OK, 11 rows affected (0.005 sec)
 Records: 11  Duplicates: 0  Warnings: 0
 
-Query OK, 14 rows affected (0.005 sec)
+Query OK, 14 rows affected (0.003 sec)
 Records: 14  Duplicates: 0  Warnings: 0
 
 +----+-----------+
@@ -59,9 +53,9 @@ Records: 14  Duplicates: 0  Warnings: 0
 +----+-----------+
 |  1 | that_yuck |
 +----+-----------+
-1 row in set (0.001 sec)
+1 row in set (0.000 sec)
 
-Query OK, 1 row affected (0.004 sec)
+Query OK, 1 row affected (0.002 sec)
 
 +----+----------+
 | id | username |
@@ -79,11 +73,11 @@ Query OK, 1 row affected (0.004 sec)
 
 Query OK, 0 rows affected (0.000 sec)
 
-Query OK, 1 row affected (0.000 sec)
+Query OK, 1 row affected (0.001 sec)
 
 Query OK, 1 row affected (0.001 sec)
 
-Query OK, 0 rows affected (0.004 sec)
+Query OK, 0 rows affected (0.002 sec)
 
 +----------+-------+-----------------------------------+
 | name     | level | description                       |
@@ -94,20 +88,20 @@ Query OK, 0 rows affected (0.004 sec)
 
 Query OK, 0 rows affected (0.000 sec)
 
-Query OK, 1 row affected (0.000 sec)
+Query OK, 1 row affected (0.001 sec)
 
 Query OK, 1 row affected (0.000 sec)
 
 Query OK, 1 row affected (0.000 sec)
 
-Query OK, 0 rows affected (0.004 sec)
+Query OK, 0 rows affected (0.003 sec)
 
 +----------------+----------------------------+-----------------+--------------+---------------------+
 | item_name      | item_description           | ability_name    | ability_type | ability_description |
 +----------------+----------------------------+-----------------+--------------+---------------------+
 | Healing Potion | Effect: Restore 2d4 + 2 HP | Attack (Dagger) | action       | 1d4 Slashing        |
 +----------------+----------------------------+-----------------+--------------+---------------------+
-1 row in set (0.001 sec)
+1 row in set (0.000 sec)
 
 Query OK, 0 rows affected (0.000 sec)
 
@@ -115,7 +109,7 @@ Query OK, 1 row affected (0.000 sec)
 
 Query OK, 1 row affected (0.000 sec)
 
-Query OK, 0 rows affected (0.009 sec)
+Query OK, 0 rows affected (0.002 sec)
 
 +------+--------+-------------------------------------+
 | name | type   | description                         |
@@ -124,7 +118,7 @@ Query OK, 0 rows affected (0.009 sec)
 +------+--------+-------------------------------------+
 1 row in set (0.000 sec)
 
-Query OK, 0 rows affected (0.006 sec)
+Query OK, 0 rows affected (0.003 sec)
 
 +--------------+----------------+-------------------------+
 | character_id | character_name | character_base_charisma |
@@ -133,7 +127,7 @@ Query OK, 0 rows affected (0.006 sec)
 +--------------+----------------+-------------------------+
 1 row in set (0.001 sec)
 
-Query OK, 1 row affected (0.004 sec)
+Query OK, 1 row affected (0.002 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
 
 +--------------+----------------+-------------------------+
@@ -141,11 +135,11 @@ Rows matched: 1  Changed: 1  Warnings: 0
 +--------------+----------------+-------------------------+
 |            4 | Jill Rogue     |                      19 |
 +--------------+----------------+-------------------------+
-1 row in set (0.000 sec)
+1 row in set (0.001 sec)
 
-Query OK, 0 rows affected (0.006 sec)
+Query OK, 0 rows affected (0.003 sec)
 
-Query OK, 1 row affected (0.004 sec)
+Query OK, 1 row affected (0.002 sec)
 
 +---------------+------------------+-------------+
 | charcter_name | spell_name       | activations |
@@ -158,9 +152,9 @@ Query OK, 1 row affected (0.004 sec)
 | Krovav        | Armor of Agathys |           0 |
 | Krovav        | Fly              |           1 |
 +---------------+------------------+-------------+
-7 rows in set (0.000 sec)
+7 rows in set (0.001 sec)
 
-Query OK, 1 row affected (0.003 sec)
+Query OK, 1 row affected (0.002 sec)
 
 +----------------+-------------------+---------------+
 | charcter_name  | item_name         | item_quantity |
@@ -169,9 +163,9 @@ Query OK, 1 row affected (0.003 sec)
 | John Barbarian | Potion of Healing |             2 |
 | John Barbarian | Chain Shirt       |             2 |
 +----------------+-------------------+---------------+
-3 rows in set (0.000 sec)
+3 rows in set (0.001 sec)
 
-Query OK, 1 row affected (0.004 sec)
+Query OK, 1 row affected (0.002 sec)
 
 +---------------+---------------------+
 | charcter_name | ability_name        |
