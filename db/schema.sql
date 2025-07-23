@@ -51,6 +51,9 @@ CREATE TABLE Characters (
   FOREIGN KEY(base_stat_id) REFERENCES SkillDeltas(id) ON DELETE RESTRICT
 );
 
+CREATE INDEX character_id_to_base_stat_id ON Characters (id, base_stat_id); 
+CREATE INDEX character_id_user_id ON Characters (user_id); 
+
 CREATE TABLE Spells (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
@@ -93,6 +96,8 @@ CREATE TABLE CharacterSpellList (
   FOREIGN KEY(spell_id) REFERENCES Spells(id) ON DELETE CASCADE
 );
 
+CREATE INDEX character_spell_list_spell_id ON CharacterSpellList (spell_id, character_id); 
+
 CREATE TABLE CharacterAbilities (
   character_id INT UNSIGNED NOT NULL,
   ability_id INT UNSIGNED NOT NULL,
@@ -104,6 +109,8 @@ CREATE TABLE CharacterAbilities (
   FOREIGN KEY(ability_id) REFERENCES Abilities(id) ON DELETE CASCADE
 );
 
+CREATE INDEX character_abilities_ability_id ON CharacterAbilities (ability_id, character_id); 
+
 CREATE TABLE CharacterInventory (
   character_id INT UNSIGNED NOT NULL,
   item_id INT UNSIGNED NOT NULL,
@@ -113,3 +120,5 @@ CREATE TABLE CharacterInventory (
   FOREIGN KEY(character_id) REFERENCES Characters(id) ON DELETE CASCADE,
   FOREIGN KEY (item_id) REFERENCES Items(id) ON DELETE CASCADE
 );
+
+CREATE INDEX character_inventory_item_id ON CharacterInventory (item_id, character_id); 
