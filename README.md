@@ -4,8 +4,8 @@
 
 ### Pre-requisites
 
-- Install [Docker](https://docs.docker.com/get-started/get-docker/) or compatible tools
-- Install [MySQL Client Tools](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)
+-   Install [Docker](https://docs.docker.com/get-started/get-docker/) or compatible tools
+-   Install [MySQL Client Tools](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)
 
 ### Setup `.env`
 
@@ -18,6 +18,7 @@ docker compose up -d
 ```
 
 Alternatively:
+
 ```bash
 npm install
 npm run dev
@@ -46,40 +47,59 @@ Go to http://localhost:3000 to access your platform.
 ## Features and Query Locations
 
 R6. Users creating an account and logging in/out
+
 app\lib\models\users\query.ts
 
 R7. Activating/deactivating spell/ability
+
 app\api\characters\[id]\[spell_id]\route.ts
 
 R8. Giving a character an item/spell/ability
+
 app\(character)\character\[id]\add\abilities\actions.ts
+
 app\(character)\character\[id]\add\items\actions.ts
+
 app\(character)\character\[id]\add\skills\actions.ts
 
 R9. Equipping/unequipping an item
+
 app/api/unequip/route.ts
+
 app/api/equip/route.ts
 
 R10. Listing available items/spells/abilities
+
 app\(character)\character\[id]\add\abilities\page.tsx
+
 app\(character)\character\[id]\add\skills\page.tsx
+
 app\(character)\character\[id]\add\items\page.tsx
 
 R11. Creating spells/items/abilities
+
 app\api\abilities\route.ts
+
 app\api\skills\route.ts
+
 app\api\items\route.ts
 
 R12. Changing skills
+
 app\lib\models\skillDeltas\query.ts
 
 R13. View character list
+
 app/api/characters/[id]/route.ts
 
 R14. Long rest
+
 app/api/long-rest/route.ts
 
 R15. Calculate skills
+
 app/(character)/character/[id]/add/abilities/actions.ts
+
 app/(character)/character/[id]/add/items/actions.ts
+
 app/(character)/character/[id]/add/spells/actions.ts
