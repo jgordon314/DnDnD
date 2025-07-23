@@ -51,6 +51,7 @@ CREATE TABLE Characters (
   FOREIGN KEY(base_stat_id) REFERENCES SkillDeltas(id) ON DELETE RESTRICT
 );
 
+CREATE INDEX character_id_to_base_stat_id ON Characters (id, base_stat_id); 
 
 CREATE TABLE Spells (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
