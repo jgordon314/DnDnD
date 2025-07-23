@@ -6,10 +6,39 @@ INSERT INTO Users (username, password) VALUES ('billnye', 'the5c1enceguy!');
 SELECT id, username FROM Users WHERE username = 'billnye' AND password = 'the5c1enceguy!';
 
 -- R7
-CREATE INDEX CharacterUserId ON Characters(user_id);
-SELECT * FROM Characters WHERE user_id = 2; 
+UPDATE CharacterSpellList csi SET activations = activations + 1 WHERE csi.spell_id = 1 AND csi.character_id = 1;
+UPDATE CharacterInventory ci JOIN Items i ON ci.item_id = i.id SET ci.activation_count = ci.activation_count + 1 WHERE ci.character_id = 1 AND i.ability_id = 1;
 
 -- R8
+CREATE UNIQUE INDEX CharacterId ON Characters(id);
+CREATE INDEX CharacterSpellListCharacterId ON CharacterSpellList(character_id);
+CREATE INDEX CharacterInventoryId ON CharacterInventory(character_id);
+CREATE INDEX CharacterAbilitiesId ON CharacterAbilities(character_id);
+
+INSERT INTO CharacterSpellList (character_id, spell_id, activations) VALUES (2, 3, 3);
+SELECT Characters.name AS charcter_name, Spells.name AS spell_name, CharacterSpellList.activations AS activations
+FROM Characters, Spells, CharacterSpellList
+WHERE Characters.id = 2 AND Characters.id = CharacterSpellList.character_id AND Spells.id = CharacterSpellList.spell_id LIMIT 5;
+
+INSERT INTO CharacterInventory (character_id, item_id, quantity) VALUES (3, 6, 2);
+SELECT Characters.name AS charcter_name, Items.name AS item_name, CharacterInventory.quantity AS item_quantity
+FROM Characters, Items, CharacterInventory
+WHERE Characters.id = 3 AND Characters.id = CharacterInventory.character_id AND Items.id = CharacterInventory.item_id LIMIT 5;
+
+INSERT INTO CharacterAbilities (character_id, ability_id) VALUES (4, 9);
+SELECT Characters.name AS charcter_name, Abilities.name AS ability_name
+FROM Characters, Abilities, CharacterAbilities
+WHERE Characters.id = 4 AND Characters.id = CharacterAbilities.character_id AND Abilities.id = CharacterAbilities.ability_id LIMIT 5;
+
+-- R9
+UPDATE CharacterInventory SET activation_count = 0 WHERE character_id = 1 AND item_id = 1;
+
+-- R10
+SELECT a.* FROM Abilities a LEFT JOIN CharacterAbilities ca ON a.id = ca.ability_id AND ca.character_id = 1 WHERE ca.character_id IS NULL LIMIT 5;
+SELECT i.* FROM Items i LEFT JOIN CharacterInventory ci ON i.id = ci.item_id AND ci.character_id = 1 WHERE ci.character_id IS NULL LIMIT 5;
+SELECT s.* FROM Spells s LEFT JOIN CharacterSpellList csl ON s.id = csl.spell_id AND csl.character_id = 1 WHERE csl.character_id IS NULL LIMIT 5;
+
+-- R11
 START TRANSACTION; 
     INSERT INTO SkillDeltas (
     armor_class, current_health, max_health,
@@ -73,7 +102,7 @@ START TRANSACTION;
 COMMIT;
 SELECT name, type, description FROM Abilities WHERE id = LAST_INSERT_ID();
 
--- R9
+-- R12
 CREATE VIEW CharacterBaseCharismas AS
 SELECT Characters.id AS character_id, Characters.name AS character_name, SkillDeltas.charisma AS character_base_charisma
 FROM Characters, SkillDeltas WHERE Characters.base_stat_id = SkillDeltas.id;
@@ -84,23 +113,33 @@ SELECT * FROM CharacterBaseCharismas WHERE character_id = 4;
 
 DROP VIEW CharacterBaseCharismas;
 
--- R10
-CREATE UNIQUE INDEX CharacterId ON Characters(id);
-CREATE INDEX CharacterSpellListCharacterId ON CharacterSpellList(character_id);
-CREATE INDEX CharacterInventoryId ON CharacterInventory(character_id);
-CREATE INDEX CharacterAbilitiesId ON CharacterAbilities(character_id);
+-- R13
+CREATE INDEX CharacterUserId ON Characters(user_id);
+SELECT * FROM Characters WHERE user_id = 2; 
 
-INSERT INTO CharacterSpellList (character_id, spell_id, activations) VALUES (2, 3, 3);
-SELECT Characters.name AS charcter_name, Spells.name AS spell_name, CharacterSpellList.activations AS activations
-FROM Characters, Spells, CharacterSpellList
-WHERE Characters.id = 2 AND Characters.id = CharacterSpellList.character_id AND Spells.id = CharacterSpellList.spell_id LIMIT 5;
+-- R14
+START TRANSACTION;
+    UPDATE CharacterInventory SET activation_count = 0 WHERE character_id = 1 AND activation_count > 0;
+    UPDATE CharacterAbilities SET activation_count = 0, available_uses = max_uses WHERE character_id = 1;
+    UPDATE CharacterSpellList SET activations = 0 WHERE character_id = 1;
+    UPDATE SkillDeltas s JOIN Characters c ON c.base_stat_id = s.id SET s.current_health = s.max_health WHERE c.id = 1;
+COMMIT;
 
-INSERT INTO CharacterInventory (character_id, item_id, quantity) VALUES (3, 6, 2);
-SELECT Characters.name AS charcter_name, Items.name AS item_name, CharacterInventory.quantity AS item_quantity
-FROM Characters, Items, CharacterInventory
-WHERE Characters.id = 3 AND Characters.id = CharacterInventory.character_id AND Items.id = CharacterInventory.item_id LIMIT 5;
-
-INSERT INTO CharacterAbilities (character_id, ability_id) VALUES (4, 9);
-SELECT Characters.name AS charcter_name, Abilities.name AS ability_name
-FROM Characters, Abilities, CharacterAbilities
-WHERE Characters.id = 4 AND Characters.id = CharacterAbilities.character_id AND Abilities.id = CharacterAbilities.ability_id LIMIT 5;
+-- R15
+(
+    SELECT sd.*, 1 AS multiplier
+    FROM SkillDeltas sd, Characters c
+    WHERE c.id = 1 AND sd.id = c.base_stat_id
+) UNION ALL (
+    SELECT sd.*, csl.activations AS multiplier
+    FROM SkillDeltas sd, Spells s, CharacterSpellList csl, Characters c
+    WHERE c.id = 1 AND s.id = csl.spell_id AND csl.character_id = c.id AND sd.id = s.skill_delta_id AND csl.activations > 0
+) UNION ALL (
+    SELECT sd.*, ca.activation_count AS multiplier
+    FROM SkillDeltas sd, Abilities a, CharacterAbilities ca, Characters c
+    WHERE c.id = 1 AND a.id = ca.ability_id AND ca.character_id = c.id AND sd.id = a.skill_delta_id AND ca.activation_count > 0
+) UNION ALL (
+    SELECT sd.*, ci.activation_count AS multiplier
+    FROM SkillDeltas sd, Abilities a, Items i, CharacterInventory ci, Characters c
+    WHERE c.id = 1 AND i.id = ci.item_id AND ci.character_id = c.id AND a.id = i.ability_id AND sd.id = a.skill_delta_id AND ci.activation_count > 0
+);

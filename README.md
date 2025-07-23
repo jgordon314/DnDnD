@@ -34,7 +34,8 @@ Type in the password you configure earlier when prompted.
 When prompted run the following MySQL file:
 
 ```mysql
-SOURCE db/fixtures/load_sample.sql;
+SOURCE db/fixtures/load_sample.sql; -- to load sample data
+SOURCE db/fixtures/load_production.sql; -- to load production data
 quit
 ```
 
