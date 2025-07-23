@@ -1,19 +1,15 @@
+-- These sample queries are for the basic features outlined in milestone 2. Between milestone 2 and milestone 3 some basic and advanced features were switched around, so the numbering of test_sample.sql may not correspond to test_production.sql.
+
 -- Load sample fixtures
 SOURCE db/fixtures/load_sample.sql;
-
-
 
 -- R6
 SELECT id, username FROM Users WHERE username = 'that_yuck' AND password = 'Amogus32!';
 INSERT INTO Users (username, password) VALUES ('billnye', 'the5c1enceguy!');
 SELECT id, username FROM Users WHERE username = 'billnye' AND password = 'the5c1enceguy!';
 
-
-
 -- R7
 SELECT * FROM Characters WHERE user_id = 2; 
-
-
 
 -- R8
 START TRANSACTION; 
@@ -95,7 +91,6 @@ COMMIT;
 
 SELECT name, type, description FROM Abilities WHERE id = LAST_INSERT_ID();
 
-
 -- R9
 CREATE VIEW CharacterBaseCharismas AS
 SELECT Characters.id AS character_id, Characters.name AS character_name, SkillDeltas.charisma AS character_base_charisma
@@ -106,7 +101,6 @@ UPDATE SkillDeltas SET charisma = charisma + 3 WHERE id = (SELECT base_stat_id F
 SELECT * FROM CharacterBaseCharismas WHERE character_id = 4;
 
 DROP VIEW CharacterBaseCharismas;
-
 
 -- R10
 INSERT INTO CharacterSpellList (character_id, spell_id, activations) VALUES (2, 3, 3);
