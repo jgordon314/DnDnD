@@ -38,6 +38,15 @@ SOURCE db/fixtures/load_sample.sql;
 quit
 ```
 
+### Create new sample data
+
+Create an openAI API key and store it as your API_KEY in the .env file.
+Then navigate to the db/fixtures folder and run
+```bash
+python database_constructor.py
+```
+The constraints of the database can be changed via the variables in the top of that python file.
+
 ### Access the application
 
 Go to http://localhost:3000 to access your platform.
