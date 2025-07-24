@@ -46,6 +46,7 @@ Then navigate to the db/fixtures folder and run
 python database_constructor.py
 ```
 The constraints of the database can be changed via the variables in the top of that python file.
+Running this file will create 9 sql files that can be run to add new data to your database.
 
 ### Access the application
 
