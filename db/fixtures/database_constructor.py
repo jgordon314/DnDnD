@@ -6,18 +6,18 @@ import string
 import json
 
 # change these
-numUsers = 10
-numCharacters = 30
-numSpells = 50
-numItems = 50
-numAbilities = 20 # note that this is specific to the number of unique abilities for characters, not items
+numUsers = 100
+numCharacters = 500
+numSpells = 100
+numItems = 200
+numAbilities = 200 # note that this is specific to the number of unique abilities for characters, not items
 
-characterMinAbilityNum = 1 # fewest number of abilities a character would have
-characterMaxAbilityNum = 5 # greatest number of abilities a character would have
+characterMinAbilityNum = 0 # fewest number of abilities a character would have
+characterMaxAbilityNum = 10 # greatest number of abilities a character would have
 characterMinSpellNum = 0 # fewest number of spells a character would have
-characterMaxSpellNum = 16 # greatest number of spells a character would have
+characterMaxSpellNum = 20 # greatest number of spells a character would have
 characterMinItemNum = 0 # fewest number of spells a character would have
-characterMaxItemNum = 20 # greatest number of spells a character would have
+characterMaxItemNum = 30 # greatest number of spells a character would have
 
 # don't change these
 characterCount = 0
@@ -44,7 +44,7 @@ def generate_Users():
     username = ''
     for x in range(1, numUsers+1):
         while username in usernameList:
-            username = ''.join(random.choice(string.ascii_lowercase) for i in range(5))   
+            username = ''.join(random.choice(string.ascii_lowercase) for i in range(6))   
         usernameList.append(username)
         password = random.randint(10000, 99999)
         file.write("INSERT INTO Users VALUES (%i, '%s', '%i');\n" % (x, username, password))
@@ -126,6 +126,7 @@ def generate_Characters():
         # print(completion.choices[0].message.content.replace('’', "''"))
         data += json.loads(completion.choices[0].message.content.replace("'", "''").replace('’', "''"))
         print((i+1)*1000/numCharacters,'%')
+    print()
     for x in range(1, 1+len(data)):
         characterCount += 1
         current = data[x-1]
